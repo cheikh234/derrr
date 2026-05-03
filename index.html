@@ -26,191 +26,49 @@
   --mono:'DM Mono',monospace;
   --disp:'Barlow Condensed',sans-serif;
   --body:'Syne',sans-serif;
-
-  /* HERO gradient — référence commune */
   --ghero: linear-gradient(135deg,#080808 0%,#0c1106 35%,#091a03 65%,#060d04 100%);
 }
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px}
 body{font-family:var(--body);background:var(--bg);color:var(--text);overflow-x:hidden}
-
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--neon);border-radius:2px}
 
-/* ── GRAIN GLOBAL ── */
 body::before{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size:160px;opacity:.025;mix-blend-mode:overlay;
 }
 
-/* ════════════════════════════════
-   LOADER PREMIUM
-════════════════════════════════ */
-#ld{
-  position:fixed;inset:0;z-index:9999;
-  background:var(--bg);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:0;
-  transition:opacity 1s cubic-bezier(.4,0,.2,1),visibility 1s;
-}
-#ld.gone{opacity:0;visibility:hidden;pointer-events:none}
-
-.ld-pre{
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.45em;text-transform:uppercase;
-  color:var(--grey);margin-bottom:2rem;
-  animation:ldFadeUp .8s .1s both;
-}
-.ld-logo-wrap{
-  position:relative;display:flex;flex-direction:column;align-items:center;
-  animation:ldFadeUp .9s .25s both;
-}
-.ld-big{
-  font-family:var(--disp);font-size:clamp(5rem,15vw,9rem);font-weight:900;
-  letter-spacing:.25em;line-height:1;
-  color:transparent;
-  -webkit-text-stroke:1px rgba(255,255,255,.15);
-  position:relative;
-}
-.ld-big .ld-fill-text{
-  position:absolute;inset:0;
-  color:var(--white);
-  overflow:hidden;
-  white-space:nowrap;
-  width:0;
-  animation:ldReveal 1.4s .6s cubic-bezier(.4,0,.2,1) forwards;
-}
-@keyframes ldReveal{to{width:100%}}
-.ld-sub{
-  font-family:var(--mono);font-size:.72rem;letter-spacing:.35em;text-transform:uppercase;
-  color:var(--neon);margin-top:.6rem;
-  animation:ldFadeUp .8s .8s both;
-}
-.ld-name-small{
-  font-family:var(--disp);font-size:1.1rem;font-weight:400;letter-spacing:.5em;
-  color:var(--grey2);margin-top:.3rem;text-transform:uppercase;
-  animation:ldFadeUp .8s .95s both;
-}
-.ld-progress{
-  margin-top:3rem;width:180px;
-  animation:ldFadeUp .6s 1s both;
-}
-.ld-track{height:1px;background:rgba(255,255,255,.08);overflow:hidden;position:relative}
-.ld-bar{
-  height:100%;width:0;
-  background:linear-gradient(90deg,transparent,var(--neon),rgba(57,255,20,.5));
-  animation:ldBar 1.8s .5s cubic-bezier(.4,0,.2,1) forwards;
-  box-shadow:0 0 8px var(--neon);
-}
-@keyframes ldBar{to{width:100%}}
-.ld-pct{
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;color:var(--grey);
-  text-align:right;margin-top:.4rem;
-}
-.ld-dots{
-  display:flex;gap:.5rem;margin-top:2rem;
-  animation:ldFadeUp .6s 1.1s both;
-}
-.ld-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.15)}
-.ld-dot:nth-child(1){background:var(--neon);animation:dotPulse 1.2s .5s infinite}
-.ld-dot:nth-child(2){animation:dotPulse 1.2s .7s infinite}
-.ld-dot:nth-child(3){animation:dotPulse 1.2s .9s infinite}
-@keyframes dotPulse{0%,100%{background:rgba(255,255,255,.15)}50%{background:var(--neon)}}
 @keyframes ldFadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
-/* ════════════════════════════════
-   INTRO SCREEN — "Portfolio"
-════════════════════════════════ */
+/* ════ INTRO SCREEN — "Portfolio" ════ */
 #intro{
   position:fixed;inset:0;z-index:9998;
   background:var(--ghero);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  pointer-events:none;
-  opacity:0;/* hidden until loader gone */
-  transition:opacity .5s, transform 1.2s cubic-bezier(.77,0,.18,1);
+  transition:transform 1.2s cubic-bezier(.77,0,.18,1);
 }
-#intro.show{opacity:1;pointer-events:all}
-#intro.exit{transform:translateY(-100%);opacity:1}
-
-/* Grid overlay intro */
-#intro::before{
-  content:'';position:absolute;inset:0;pointer-events:none;
+#intro.exit{transform:translateY(-100%)}
+#intro::before{content:'';position:absolute;inset:0;pointer-events:none;
   background-image:linear-gradient(rgba(57,255,20,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(57,255,20,.035) 1px,transparent 1px);
-  background-size:52px 52px;
-}
-#intro::after{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(57,255,20,.06),transparent 70%);
-}
-.intro-eyebrow{
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.5em;text-transform:uppercase;
-  color:var(--neon);margin-bottom:1.2rem;
-  opacity:0;animation:none;
-}
-#intro.show .intro-eyebrow{animation:ldFadeUp .7s .3s both}
-.intro-big{
-  font-family:var(--disp);
-  font-size:clamp(5rem,18vw,14rem);
-  font-weight:900;letter-spacing:.04em;text-transform:uppercase;
-  line-height:.85;color:var(--white);
-  position:relative;z-index:1;text-align:center;
-  opacity:0;
-}
-#intro.show .intro-big{animation:ldFadeUp .9s .5s both}
-.intro-big em{
-  font-style:italic;
-  -webkit-text-stroke:1.5px var(--neon);
-  color:transparent;
-}
-.intro-name{
-  font-family:var(--mono);font-size:clamp(.7rem,2vw,1rem);letter-spacing:.6em;
-  text-transform:uppercase;color:var(--grey2);
-  margin-top:1.2rem;position:relative;z-index:1;
-  opacity:0;
-}
-#intro.show .intro-name{animation:ldFadeUp .8s .7s both}
-.intro-line{
-  width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--neon),transparent);
-  margin:1.8rem auto 0;position:relative;z-index:1;
-  opacity:0;
-}
-#intro.show .intro-line{animation:ldFadeUp .6s .9s both}
-.intro-skip{
-  position:absolute;bottom:2.5rem;right:2.5rem;
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;
-  color:var(--grey);cursor:pointer;
-  display:flex;align-items:center;gap:.6rem;
-  border:1px solid var(--border);padding:.4rem .9rem;
-  transition:all .3s;z-index:2;
-  opacity:0;
-}
-#intro.show .intro-skip{animation:ldFadeUp .5s 1.2s both}
+  background-size:52px 52px;}
+#intro::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(57,255,20,.06),transparent 70%);}
+.intro-eyebrow{font-family:var(--mono);font-size:.6rem;letter-spacing:.5em;text-transform:uppercase;color:var(--neon);margin-bottom:1.2rem;animation:ldFadeUp .7s .2s both;}
+.intro-big{font-family:var(--disp);font-size:clamp(5rem,18vw,14rem);font-weight:900;letter-spacing:.04em;text-transform:uppercase;line-height:.85;color:var(--white);position:relative;z-index:1;text-align:center;animation:ldFadeUp .9s .4s both;}
+.intro-big em{font-style:italic;-webkit-text-stroke:1.5px var(--neon);color:transparent;}
+.intro-name{font-family:var(--mono);font-size:clamp(.7rem,2vw,1rem);letter-spacing:.6em;text-transform:uppercase;color:var(--grey2);margin-top:1.2rem;position:relative;z-index:1;animation:ldFadeUp .8s .6s both;}
+.intro-line{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--neon),transparent);margin:1.8rem auto 0;position:relative;z-index:1;animation:ldFadeUp .6s .8s both;}
+.intro-skip{position:absolute;bottom:2.5rem;right:2.5rem;font-family:var(--mono);font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--grey);cursor:pointer;display:flex;align-items:center;gap:.6rem;border:1px solid var(--border);padding:.4rem .9rem;transition:all .3s;z-index:2;animation:ldFadeUp .5s 1s both;}
 .intro-skip:hover{color:var(--neon);border-color:var(--border2)}
 .intro-skip::after{content:'';width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg)}
 
-/* ════════════════════════════════
-   NAV — transparent au top, bg au scroll
-   FIX: padding-top sur le body pour compenser
-════════════════════════════════ */
-nav{
-  position:fixed;top:0;left:0;right:0;
-  z-index:800;
-  height:68px;
-  padding:0 5vw;
-  display:flex;align-items:center;justify-content:space-between;
-  background:transparent;
-  transition:background .4s, backdrop-filter .4s, border-color .4s, box-shadow .4s;
-  border-bottom:1px solid transparent;
-}
-nav.sc{
-  background:rgba(8,8,8,.92);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
-  border-bottom-color:var(--border);
-  box-shadow:0 1px 20px rgba(0,0,0,.4);
-}
+
+/* ════ NAV ════ */
+nav{position:fixed;top:0;left:0;right:0;z-index:800;height:68px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;background:transparent;transition:background .4s,backdrop-filter .4s,border-color .4s,box-shadow .4s;border-bottom:1px solid transparent;}
+nav.sc{background:rgba(8,8,8,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom-color:var(--border);box-shadow:0 1px 20px rgba(0,0,0,.4);}
 .logo{font-family:var(--disp);font-size:1.9rem;font-weight:900;letter-spacing:.12em;color:var(--white);text-decoration:none;line-height:1}
 .logo em{color:var(--neon);font-style:normal}
 .nav-links{display:flex;gap:2.5rem;list-style:none}
@@ -224,11 +82,7 @@ nav.sc{
 .ham.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
 .ham.open span:nth-child(2){opacity:0}
 .ham.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
-.mmenu{
-  display:none;position:fixed;inset:0;z-index:750;
-  background:rgba(8,8,8,.97);backdrop-filter:blur(24px);
-  flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
-}
+.mmenu{display:none;position:fixed;inset:0;z-index:750;background:rgba(8,8,8,.97);backdrop-filter:blur(24px);flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;}
 .mmenu.open{display:flex}
 .mmenu a{font-family:var(--disp);font-size:3rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--white);text-decoration:none;transition:all .3s;position:relative}
 .mmenu a::after{content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--neon);transition:width .35s}
@@ -240,9 +94,7 @@ nav.sc{
 #btt.show{opacity:1;pointer-events:all;transform:none}
 #btt:hover{background:var(--neon);color:var(--bg);box-shadow:0 0 20px rgba(57,255,20,.4)}
 
-/* ════════════════════════════════
-   SCROLL ANIMATIONS
-════════════════════════════════ */
+/* ════ SCROLL ANIMATIONS ════ */
 .sa{opacity:0;transform:translateY(44px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
 .sa.vis{opacity:1;transform:none}
 .sa-l{opacity:0;transform:translateX(-44px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
@@ -253,16 +105,14 @@ nav.sc{
 .sa-z.vis{opacity:1;transform:scale(1)}
 .sa-flip{opacity:0;transform:perspective(600px) rotateX(18deg) translateY(30px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);transform-origin:top center}
 .sa-flip.vis{opacity:1;transform:perspective(600px) rotateX(0deg) translateY(0)}
-/* stagger */
 .d1{transition-delay:.05s!important}.d2{transition-delay:.10s!important}.d3{transition-delay:.15s!important}
 .d4{transition-delay:.20s!important}.d5{transition-delay:.25s!important}.d6{transition-delay:.30s!important}
 .d7{transition-delay:.35s!important}.d8{transition-delay:.40s!important}.d9{transition-delay:.45s!important}
 .d10{transition-delay:.50s!important}.d11{transition-delay:.55s!important}.d12{transition-delay:.60s!important}
 .d13{transition-delay:.65s!important}.d14{transition-delay:.70s!important}.d15{transition-delay:.75s!important}
+.d16{transition-delay:.80s!important}.d17{transition-delay:.85s!important}
 
-/* ════════════════════════════════
-   SECTION UTILS
-════════════════════════════════ */
+/* ════ SECTION UTILS ════ */
 section{padding:8rem 5vw;position:relative;overflow:hidden}
 .eyebrow{font-family:var(--mono);font-size:.62rem;letter-spacing:.38em;text-transform:uppercase;color:var(--neon);display:flex;align-items:center;gap:.8rem;margin-bottom:1rem}
 .eyebrow::before{content:'';width:24px;height:1px;background:var(--neon)}
@@ -270,26 +120,17 @@ h2.stitle{font-family:var(--disp);font-size:clamp(2.8rem,6vw,5.5rem);font-weight
 h2.stitle em{font-style:italic;color:var(--neon)}
 .ssub{font-size:.88rem;color:var(--grey2);line-height:1.85;max-width:500px}
 
-/* ════════════════════════════════
-   HERO — dégradé signature
-════════════════════════════════ */
+/* ════ HERO ════ */
 #hero{
-  min-height:100vh;
-  display:flex;flex-direction:column;justify-content:center;
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
   padding:9rem 7vw 5rem;
-  background:var(--ghero);
-  position:relative;overflow:hidden;
+  background:var(--ghero);position:relative;overflow:hidden;
 }
-/* Grid */
 #hero::before{content:'';position:absolute;inset:0;pointer-events:none;
   background-image:linear-gradient(rgba(57,255,20,.038) 1px,transparent 1px),linear-gradient(90deg,rgba(57,255,20,.038) 1px,transparent 1px);
   background-size:52px 52px}
-/* Glow */
-#hero::after{content:'';position:absolute;right:-200px;top:-200px;width:800px;height:800px;
-  background:radial-gradient(circle,rgba(57,255,20,.07),transparent 65%);pointer-events:none}
-.hero-scan{position:absolute;inset:0;pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(57,255,20,.01) 4px);z-index:1}
-
+#hero::after{content:'';position:absolute;right:-200px;top:-200px;width:800px;height:800px;background:radial-gradient(circle,rgba(57,255,20,.07),transparent 65%);pointer-events:none}
+.hero-scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(57,255,20,.01) 4px);z-index:1}
 .hero-inner{position:relative;z-index:2;max-width:820px}
 .sys-tag{font-family:var(--mono);font-size:.6rem;letter-spacing:.24em;color:var(--neon);display:flex;align-items:center;gap:.7rem;margin-bottom:2.5rem;animation:fsu .8s .3s both}
 .sys-tag .blink{width:6px;height:6px;border-radius:50%;background:var(--neon);flex-shrink:0;animation:blk 1.5s infinite}
@@ -330,14 +171,8 @@ h1.htitle .nl{display:block;color:var(--neon);text-shadow:0 0 60px rgba(57,255,2
 .mq-sep{color:rgba(57,255,20,.35);margin:0 .2rem}
 @keyframes mqs{to{transform:translateX(-50%)}}
 
-/* ════════════════════════════════
-   ABOUT
-   Fond identique au hero
-════════════════════════════════ */
-#about{
-  background:linear-gradient(160deg,#080c06 0%,#060a04 40%,#0c0f08 70%,#08080c 100%);
-}
-/* thin grid */
+/* ════ ABOUT ════ */
+#about{background:linear-gradient(160deg,#080c06 0%,#060a04 40%,#0c0f08 70%,#08080c 100%);}
 #about::before{content:'';position:absolute;inset:0;pointer-events:none;
   background-image:linear-gradient(rgba(57,255,20,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(57,255,20,.025) 1px,transparent 1px);
   background-size:52px 52px}
@@ -350,13 +185,15 @@ h1.htitle .nl{display:block;color:var(--neon);text-shadow:0 0 60px rgba(57,255,2
 .acard-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(8,8,8,.97),transparent);padding:2rem 1.4rem .9rem;font-family:var(--mono);z-index:2}
 .acard-overlay .nm{font-size:.78rem;font-weight:500;letter-spacing:.15em;color:var(--white);text-transform:uppercase}
 .acard-overlay .rl{font-size:.6rem;letter-spacing:.1em;color:var(--neon);margin-top:.2rem}
-.acard-badge{position:absolute;top:1.2rem;right:1.2rem;background:rgba(8,8,8,.88);border:1px solid var(--border2);padding:.6rem .9rem;font-family:var(--mono);z-index:3;backdrop-filter:blur(8px)}
-.badge-n{font-size:1.8rem;font-weight:500;color:var(--neon);line-height:1}
-.badge-l{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--grey)}
 .atext h3{font-family:var(--disp);font-size:2rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--white);margin-bottom:1.2rem;line-height:1}
 .atext h3 em{font-style:italic;color:var(--neon)}
 .atext p{font-size:.86rem;color:var(--grey2);line-height:1.85;margin-bottom:.9rem}
 .atext p strong{color:var(--silver);font-weight:600}
+
+/* Traits perso */
+.traits-row{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.4rem 0;}
+.trait{font-family:var(--mono);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;padding:.32rem .85rem;border:1px solid var(--border2);background:var(--neonA);color:var(--neon);border-radius:3px;}
+
 .irows{display:flex;flex-direction:column;gap:.4rem;margin-top:2rem}
 .irow{display:flex;align-items:center;gap:.9rem;padding:.7rem 1rem;background:rgba(255,255,255,.03);border:1px solid var(--border);font-family:var(--mono);font-size:.73rem;color:var(--grey2);transition:all .35s;cursor:default}
 .irow:hover{border-color:var(--border2);background:var(--neonA);color:var(--white);transform:translateX(5px)}
@@ -364,75 +201,41 @@ h1.htitle .nl{display:block;color:var(--neon);text-shadow:0 0 60px rgba(57,255,2
 .irow a{color:inherit;text-decoration:none}
 @media(max-width:1050px){.about-grid{grid-template-columns:1fr;gap:3.5rem}}
 
-/* ════════════════════════════════
-   SKILLS — fond hero-like + cards BLANCHES
-════════════════════════════════ */
-#skills{
-  background:linear-gradient(155deg,#060c04 0%,#080d06 25%,#040a08 50%,#060804 75%,#0a0c06 100%);
-  position:relative;
-}
+/* ════ SKILLS ════ */
+#skills{background:linear-gradient(155deg,#060c04 0%,#080d06 25%,#040a08 50%,#060804 75%,#0a0c06 100%);position:relative;}
 #skills::before{content:'';position:absolute;inset:0;pointer-events:none;
   background-image:linear-gradient(rgba(57,255,20,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(57,255,20,.025) 1px,transparent 1px);
   background-size:52px 52px}
-#skills::after{content:'';position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);
-  width:600px;height:600px;
-  background:radial-gradient(circle,rgba(57,255,20,.05),transparent 65%);
-  pointer-events:none;border-radius:50%}
+#skills::after{content:'';position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(57,255,20,.05),transparent 65%);pointer-events:none;border-radius:50%}
 
-/* GRILLE cards blanches — 5 cols / 2 mobile */
-.sk-grid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:1rem;          /* ← marge entre cards */
-  margin-top:3.5rem;
-  position:relative;z-index:1;
-}
-.sk-card{
-  background:#ffffff;
-  border-radius:14px;
-  padding:1.5rem .8rem 1.1rem;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;
-  /* ombre douce — pas de shadow blanc violent */
-  box-shadow:0 2px 12px rgba(0,0,0,.35),0 8px 28px rgba(0,0,0,.25);
-  border:none;
-  position:relative;overflow:hidden;
-  transition:transform .38s cubic-bezier(.16,1,.3,1),box-shadow .38s;
-  cursor:default;
-}
-/* Reflet haut */
-.sk-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:42%;
-  background:linear-gradient(to bottom,rgba(255,255,255,.22),transparent);
-  border-radius:14px 14px 0 0;pointer-events:none;
-}
-/* Ligne néon en bas au hover */
-.sk-card::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:2.5px;
-  background:linear-gradient(90deg,transparent,var(--neon),transparent);
-  transform:scaleX(0);transform-origin:center;
-  transition:transform .42s cubic-bezier(.16,1,.3,1);
-  border-radius:0 0 14px 14px;
-}
+.sk-section-lbl{font-family:var(--mono);font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:var(--grey2);margin:2.8rem 0 .9rem;display:flex;align-items:center;gap:.8rem;position:relative;z-index:1}
+.sk-section-lbl::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+
+.sk-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:1rem;position:relative;z-index:1;}
+.sk-card{background:#ffffff;border-radius:14px;padding:1.5rem .8rem 1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;box-shadow:0 2px 12px rgba(0,0,0,.35),0 8px 28px rgba(0,0,0,.25);border:none;position:relative;overflow:hidden;transition:transform .38s cubic-bezier(.16,1,.3,1),box-shadow .38s;cursor:default;}
+.sk-card::before{content:'';position:absolute;top:0;left:0;right:0;height:42%;background:linear-gradient(to bottom,rgba(255,255,255,.22),transparent);border-radius:14px 14px 0 0;pointer-events:none;}
+.sk-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2.5px;background:linear-gradient(90deg,transparent,var(--neon),transparent);transform:scaleX(0);transform-origin:center;transition:transform .42s cubic-bezier(.16,1,.3,1);border-radius:0 0 14px 14px;}
 .sk-card:hover{transform:translateY(-7px) scale(1.04);box-shadow:0 12px 36px rgba(0,0,0,.45),0 0 0 1.5px rgba(57,255,20,.25)}
 .sk-card:hover::after{transform:scaleX(1)}
 .sk-card i,.sk-card .emi{font-size:2.1rem;position:relative;z-index:1}
 .sk-name{font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:#35353d;font-weight:500;position:relative;z-index:1;text-align:center}
 
+/* Card "en cours" — fond sombre, badge */
+.sk-card.wip{background:linear-gradient(145deg,#18181e,#111116);border:1px solid rgba(255,255,255,.07);}
+.sk-card.wip::before{background:linear-gradient(to bottom,rgba(255,255,255,.05),transparent);}
+.sk-card.wip .sk-name{color:var(--grey2);}
+.sk-card.wip i,.sk-card.wip .emi{opacity:.65;}
+.wip-badge{position:absolute;top:6px;right:6px;font-family:var(--mono);font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.25);color:var(--neon);padding:.12rem .4rem;border-radius:2px;z-index:4;}
+
 @media(max-width:900px){.sk-grid{grid-template-columns:repeat(3,1fr);gap:.8rem}}
-@media(max-width:600px){
-  .sk-grid{grid-template-columns:repeat(2,1fr);gap:.7rem}
-  .sk-card{padding:1.2rem .6rem .9rem}
-}
+@media(max-width:600px){.sk-grid{grid-template-columns:repeat(2,1fr);gap:.7rem}.sk-card{padding:1.2rem .6rem .9rem}}
 
 /* Panels catégories */
-.sp-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:.8rem;            /* ← marge entre panels */
-  margin-top:1.5rem;
-  position:relative;z-index:1;
-}
-.sp{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:1.6rem;transition:all .35s}
+.sp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:1.5rem;position:relative;z-index:1;}
+.sp{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:1.6rem;transition:all .35s;position:relative}
 .sp:hover{background:rgba(255,255,255,.07);border-color:var(--border2);transform:translateY(-3px)}
+.sp.wip-panel{border-color:rgba(255,255,255,.05);opacity:.85;}
+.sp.wip-panel::after{content:'EN COURS';position:absolute;top:1rem;right:1rem;font-family:var(--mono);font-size:.42rem;letter-spacing:.12em;color:var(--neon);background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.2);padding:.15rem .5rem;border-radius:2px;}
 .sp-ico{width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;border:1px solid var(--border2);background:var(--neonA);border-radius:8px;margin-bottom:1rem}
 .sp-ttl{font-family:var(--mono);font-size:.63rem;letter-spacing:.2em;text-transform:uppercase;color:var(--neon);margin-bottom:.7rem}
 .sp-tags{display:flex;flex-wrap:wrap;gap:.35rem}
@@ -441,27 +244,20 @@ h1.htitle .nl{display:block;color:var(--neon);text-shadow:0 0 60px rgba(57,255,2
 @media(max-width:750px){.sp-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:500px){.sp-grid{grid-template-columns:1fr}}
 
-/* ════════════════════════════════
-   FORMATION — même famille de gradient hero
-════════════════════════════════ */
-#formation{
-  background:linear-gradient(150deg,#060a04 0%,#0a0e06 30%,#040806 55%,#080a04 100%);
-}
+/* ════ FORMATION ════ */
+#formation{background:linear-gradient(150deg,#060a04 0%,#0a0e06 30%,#040806 55%,#080a04 100%);}
 #formation::before{content:'';position:absolute;inset:0;pointer-events:none;
   background-image:linear-gradient(rgba(57,255,20,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(57,255,20,.02) 1px,transparent 1px);
   background-size:52px 52px}
 .tl{display:flex;flex-direction:column;gap:.8rem;margin-top:4rem;position:relative;z-index:1}
-.tl-row{
-  display:grid;grid-template-columns:160px 1fr;
-  background:rgba(255,255,255,.03);
-  border:1px solid var(--border);
-  border-radius:10px;
-  transition:all .4s;position:relative;overflow:hidden;
-}
+.tl-row{display:grid;grid-template-columns:180px 1fr;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;transition:all .4s;position:relative;overflow:hidden;}
 .tl-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--neon),rgba(57,255,20,.2));transform:scaleY(0);transform-origin:top;transition:transform .5s cubic-bezier(.16,1,.3,1)}
 .tl-row:hover{background:rgba(255,255,255,.055);border-color:var(--border2);transform:translateX(4px)}.tl-row:hover::before{transform:scaleY(1)}
 .tl-side{padding:2rem 1.5rem;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:.5rem;align-items:flex-start}
-.tl-yr{font-family:var(--disp);font-size:1.6rem;font-weight:900;color:var(--neon);letter-spacing:.04em;line-height:1}
+/* Photo école / stage */
+.tl-org-photo{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;margin-bottom:.6rem;filter:saturate(.9) brightness(.9);border:1px solid var(--border)}
+.tl-org-photo-ph{width:100%;aspect-ratio:16/9;background:var(--bg3);border-radius:6px;margin-bottom:.6rem;display:flex;align-items:center;justify-content:center;color:rgba(57,255,20,.1);font-size:2rem;border:1px solid var(--border)}
+.tl-yr{font-family:var(--disp);font-size:1.5rem;font-weight:900;color:var(--neon);letter-spacing:.04em;line-height:1}
 .tl-bdg{font-family:var(--mono);font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;padding:.22rem .7rem;border:1px solid;border-radius:3px}
 .tb-f{border-color:var(--neon);color:var(--neon);background:var(--neonB)}
 .tb-s{border-color:rgba(255,255,255,.2);color:var(--grey2)}
@@ -473,34 +269,31 @@ h1.htitle .nl{display:block;color:var(--neon);text-shadow:0 0 60px rgba(57,255,2
 .tl-body li{font-size:.83rem;color:var(--grey2);line-height:1.7;list-style:none;padding-left:1.2rem;position:relative}
 .tl-body li::before{content:'▸';position:absolute;left:0;color:var(--neon);font-size:.7rem}
 .tl-body li strong{color:var(--silver);font-weight:600}
-@media(max-width:600px){.tl-row{grid-template-columns:1fr}.tl-side{border-right:none;border-bottom:1px solid var(--border);padding:1.5rem;flex-direction:row;align-items:center;gap:1rem}.tl-body{padding:1.5rem}}
 
-/* ════════════════════════════════
-   PROJETS — gradient hero
-════════════════════════════════ */
-#projets{
-  background:linear-gradient(140deg,#060a04 0%,#08100a 35%,#040806 65%,#0a0c06 100%);
-}
+/* Collab badges */
+.collab-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+.collab-tag{display:flex;align-items:center;gap:.4rem;font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;padding:.28rem .75rem;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;color:var(--grey2);transition:all .3s}
+.collab-tag:hover{border-color:var(--border2);color:var(--neon)}
+.collab-tag i{color:var(--neon);font-size:.7rem}
+
+/* Freelance row */
+.tl-row.freelance{border-color:rgba(255,200,0,.15)}
+.tl-row.freelance .tl-yr{color:#f0c040}
+.tl-row.freelance::before{background:linear-gradient(to bottom,#f0c040,rgba(240,192,64,.2))}
+.tb-freelance{border-color:#f0c040;color:#f0c040;background:rgba(240,192,64,.07)}
+
+@media(max-width:600px){.tl-row{grid-template-columns:1fr}.tl-side{border-right:none;border-bottom:1px solid var(--border);padding:1.5rem;flex-direction:row;align-items:center;gap:1rem;flex-wrap:wrap}.tl-body{padding:1.5rem}}
+
+/* ════ PROJETS ════ */
+#projets{background:linear-gradient(140deg,#060a04 0%,#08100a 35%,#040806 65%,#0a0c06 100%);}
 #projets::before{content:'';position:absolute;inset:0;pointer-events:none;
   background-image:linear-gradient(rgba(57,255,20,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(57,255,20,.022) 1px,transparent 1px);
   background-size:52px 52px}
 .fbar{display:flex;gap:.5rem;flex-wrap:wrap;margin:2.5rem 0;position:relative;z-index:1}
 .fbtn{font-family:var(--mono);font-size:.63rem;letter-spacing:.18em;text-transform:uppercase;padding:.45rem 1.2rem;background:transparent;border:1px solid var(--border);color:var(--grey);cursor:pointer;transition:all .3s;border-radius:3px}
 .fbtn.on,.fbtn:hover{background:var(--neon);border-color:var(--neon);color:var(--bg)}
-
-/* grille projets avec gap visible */
-.pgrid{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1rem;            /* ← marge entre cards projets */
-  position:relative;z-index:1;
-}
-.pcard{
-  display:none;flex-direction:column;
-  background:rgba(255,255,255,.04);
-  border:1px solid var(--border);
-  border-radius:10px;overflow:hidden;
-  transition:all .4s cubic-bezier(.16,1,.3,1);
-}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;position:relative;z-index:1;}
+.pcard{display:none;flex-direction:column;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:all .4s cubic-bezier(.16,1,.3,1);}
 .pcard.show{display:flex}
 .pcard:hover{background:rgba(255,255,255,.07);border-color:var(--border2);transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
 .pthumb{aspect-ratio:16/9;position:relative;overflow:hidden;background:var(--bg2);display:flex;align-items:center;justify-content:center}
@@ -520,17 +313,13 @@ h1.htitle .nl{display:block;color:var(--neon);text-shadow:0 0 60px rgba(57,255,2
 @media(max-width:900px){.pgrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.pgrid{grid-template-columns:1fr;gap:.7rem}}
 
-/* ════════════════════════════════
-   CONTACT — gradient hero
-════════════════════════════════ */
-#contact{
-  background:linear-gradient(160deg,#060e04 0%,#04080a 35%,#080c06 65%,#060a04 100%);
-}
+/* ════ CONTACT ════ */
+#contact{background:linear-gradient(160deg,#060e04 0%,#04080a 35%,#080c06 65%,#060a04 100%);}
 #contact::before{content:'';position:absolute;left:50%;top:0;transform:translateX(-50%);width:1px;height:100%;background:linear-gradient(to bottom,transparent,rgba(57,255,20,.1),transparent);pointer-events:none}
 #contact::after{content:'';position:absolute;inset:0;pointer-events:none;
   background-image:linear-gradient(rgba(57,255,20,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(57,255,20,.02) 1px,transparent 1px);
   background-size:52px 52px}
-.contact-wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:5rem;margin-top:4rem;align-items:start;position:relative;z-index:1}
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5rem;margin-top:4rem;align-items:start;position:relative;z-index:1}
 .cleft h3{font-family:var(--disp);font-size:1.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--white);margin-bottom:1rem;line-height:1}
 .cleft h3 em{font-style:italic;color:var(--neon)}
 .cleft p{font-size:.85rem;color:var(--grey2);line-height:1.8;margin-bottom:2rem}
@@ -547,28 +336,23 @@ h1.htitle .nl{display:block;color:var(--neon);text-shadow:0 0 60px rgba(57,255,2
 .slink{display:flex;align-items:center;gap:.4rem;padding:.45rem .9rem;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;color:var(--grey2);text-decoration:none;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;transition:all .3s}
 .slink:hover{background:var(--neon);border-color:var(--neon);color:var(--bg)}
 .slink i{font-size:.85rem}
-.cform{display:flex;flex-direction:column;gap:.9rem}
-.fg{display:flex;flex-direction:column;gap:.35rem}
-.fg label{font-family:var(--mono);font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--grey)}
-.fi,.fta{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:7px;padding:.8rem 1rem;color:var(--white);font-family:var(--mono);font-size:.82rem;outline:none;resize:vertical;transition:border-color .3s,background .3s}
-.fi:focus,.fta:focus{border-color:var(--border2);background:var(--neonA)}
-.fi::placeholder,.fta::placeholder{color:#38383f}
-.fta{min-height:110px}
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
-.fsub{background:var(--neon);color:var(--bg);border:none;border-radius:7px;padding:.9rem;width:100%;font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .35s;display:flex;align-items:center;justify-content:center;gap:.6rem;box-shadow:0 0 28px rgba(57,255,20,.15)}
-.fsub:hover{background:var(--white);transform:translateY(-2px);box-shadow:0 0 40px rgba(57,255,20,.3)}
-@media(max-width:900px){.contact-wrap{grid-template-columns:1fr;gap:3rem}}
-@media(max-width:500px){.frow{grid-template-columns:1fr}}
 
-/* ════════════════════════════════
-   FOOTER — gradient hero
-════════════════════════════════ */
-footer{
-  background:linear-gradient(135deg,#050804 0%,#080a06 100%);
-  border-top:1px solid var(--border);
-  padding:2rem 5vw;
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
-}
+/* Contact right — info panel */
+.cright{display:flex;flex-direction:column;gap:1.2rem}
+.cavail{background:rgba(57,255,20,.07);border:1px solid rgba(57,255,20,.2);border-radius:10px;padding:1.6rem;display:flex;align-items:center;gap:1.2rem}
+.cavail-dot{width:10px;height:10px;border-radius:50%;background:var(--neon);flex-shrink:0;animation:blk 1.5s infinite;box-shadow:0 0 8px var(--neon)}
+.cavail-txt h4{font-family:var(--disp);font-size:1.1rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--white);margin-bottom:.2rem}
+.cavail-txt p{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;color:var(--grey2)}
+.cinfo-box{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:1.6rem}
+.cinfo-box h4{font-family:var(--mono);font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--neon);margin-bottom:1.1rem}
+.cinfo-list{display:flex;flex-direction:column;gap:.7rem}
+.cinfo-item{display:flex;align-items:flex-start;gap:.8rem;font-family:var(--mono);font-size:.72rem;color:var(--grey2)}
+.cinfo-item i{color:var(--neon);margin-top:.05rem;width:14px;flex-shrink:0}
+
+@media(max-width:900px){.contact-wrap{grid-template-columns:1fr;gap:3rem}}
+
+/* ════ FOOTER ════ */
+footer{background:linear-gradient(135deg,#050804 0%,#080a06 100%);border-top:1px solid var(--border);padding:2rem 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
 .flogo{font-family:var(--disp);font-size:1.5rem;font-weight:900;letter-spacing:.12em;color:var(--white)}
 .flogo em{color:var(--neon);font-style:normal}
 footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(--grey);text-transform:uppercase}
@@ -576,9 +360,7 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
 .ficon{width:34px;height:34px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--grey);text-decoration:none;font-size:.8rem;transition:all .3s}
 .ficon:hover{background:var(--neon);border-color:var(--neon);color:var(--bg);transform:translateY(-2px)}
 
-/* ════════════════════════════════
-   LIGHTBOX
-════════════════════════════════ */
+/* ════ LIGHTBOX ════ */
 #lightbox{display:none;position:fixed;inset:0;z-index:9900;background:rgba(0,0,0,.97);backdrop-filter:blur(16px);flex-direction:column;align-items:center;justify-content:center}
 #lightbox.open{display:flex}
 .lb-close{position:absolute;top:1.5rem;right:1.5rem;width:44px;height:44px;background:rgba(57,255,20,.1);border:1px solid var(--border2);border-radius:6px;color:var(--neon);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
@@ -606,29 +388,11 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
 </head>
 <body>
 
-<!-- ════ LOADER ════ -->
-<div id="ld">
-  <div class="ld-pre">Loading portfolio</div>
-  <div class="ld-logo-wrap">
-    <div class="ld-big">
-      B.M
-      <span class="ld-fill-text">B.M</span>
-    </div>
-    <div class="ld-sub">// Portfolio</div>
-    <div class="ld-name-small">Bassirou &nbsp; Mbacké</div>
-  </div>
-  <div class="ld-progress">
-    <div class="ld-track"><div class="ld-bar"></div></div>
-    <div class="ld-pct" id="ldpct">0%</div>
-  </div>
-  <div class="ld-dots">
-    <div class="ld-dot"></div>
-    <div class="ld-dot"></div>
-    <div class="ld-dot"></div>
-  </div>
-</div>
 
-<!-- ════ INTRO SCREEN — "Portfolio" grand + nom petit ════ -->
+
+
+
+<!-- ════ INTRO SCREEN — "Portfolio" ════ -->
 <div id="intro">
   <div class="intro-eyebrow">Web &amp; Mobile Developer — Dakar 🇸🇳</div>
   <div class="intro-big">Port<em>folio</em></div>
@@ -650,7 +414,7 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
     <li><a href="#projets">Projets</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="mailto:cheikhbass2001@gmail.com" class="nav-cta">Embauche-moi</a>
+  <a href="https://wa.me/221776616619" target="_blank" class="nav-cta">Me contacter</a>
   <button class="ham" id="ham" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
 <div class="mmenu" id="mmenu">
@@ -667,46 +431,48 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
   <div class="hero-inner">
     <div class="sys-tag"><div class="blink"></div>SYS_STATUS: DISPONIBLE &nbsp;|&nbsp; DAKAR, SN 🇸🇳</div>
     <h1 class="htitle">Bassirou<span class="nl">Mbacké</span></h1>
-    <p class="hrole">Dev Web &amp; Mobile <em>//</em> Front-End</p>
-    <p class="hdesc">Développeur <strong>front-end passionné</strong>, formé à Bakeli School of Technology. Je construis des interfaces modernes, rapides et inoubliables.</p>
+    <p class="hrole">Dev Web &amp; Mobile <em>//</em> Front-End · Graphiste</p>
+    <p class="hdesc">Développeur <strong>front-end passionné</strong>, formé à Bakeli School of Technology. Je construis des interfaces modernes, rapides et inoubliables — et je me débrouille seul pour trouver des solutions.</p>
     <div class="hbtns">
       <a href="#projets" class="btn-n"><i class="fa-solid fa-terminal"></i>Voir mes projets</a>
-      <a href="#contact" class="btn-o"><i class="fa-regular fa-envelope"></i>Me contacter</a>
+      <a href="#contact" class="btn-o"><i class="fa-brands fa-whatsapp"></i>Me contacter</a>
     </div>
     <div class="hstats">
-      <div class="hs"><div class="hs-n" data-t="3">0</div><div class="hs-l">Mois Volkeno</div></div>
-      <div class="hs"><div class="hs-n" data-t="7" data-plus="1">0</div><div class="hs-l">Projets</div></div>
+      <div class="hs"><div class="hs-n" data-t="3">0</div><div class="hs-l">Mois Stage</div></div>
+      <div class="hs"><div class="hs-n" data-t="7" data-plus="1">0</div><div class="hs-l">Projets Web</div></div>
+      <div class="hs"><div class="hs-n" data-t="3">0</div><div class="hs-l">Ans Freelance</div></div>
       <div class="hs"><div class="hs-n" data-t="4">0</div><div class="hs-l">Domaines</div></div>
     </div>
   </div>
-  <div class="hchip hc1"><div class="chip-v">React JS</div><div class="chip-l">Expert</div></div>
+  <div class="hchip hc1"><div class="chip-v">React JS</div><div class="chip-l">Maîtrisé</div></div>
   <div class="hchip hc2"><div class="chip-v">7+</div><div class="chip-l">Projets livrés</div></div>
 </section>
 
 <!-- MARQUEE -->
 <div class="mq-wrap"><div class="mq">
-  <span class="mq-item"><i class="fa-brands fa-html5" style="color:#e44d26"></i>HTML5<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-css3-alt" style="color:#264de4"></i>CSS3<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-js" style="color:#e8c200"></i>JavaScript<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-react" style="color:#20b8d8"></i>React JS<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-solid fa-wind" style="color:#38bdf8"></i>Tailwind<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-bootstrap" style="color:#7952b3"></i>Bootstrap<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-python" style="color:#3578a8"></i>Python<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-git-alt" style="color:#e44d26"></i>Git<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-github"></i>GitHub<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-solid fa-pen-nib" style="color:#ff9a00"></i>Illustrator<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-solid fa-layer-group" style="color:#1e8be8"></i>Photoshop<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-html5" style="color:#e44d26"></i>HTML5<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-css3-alt" style="color:#264de4"></i>CSS3<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-js" style="color:#e8c200"></i>JavaScript<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-react" style="color:#20b8d8"></i>React JS<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-solid fa-wind" style="color:#38bdf8"></i>Tailwind<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-bootstrap" style="color:#7952b3"></i>Bootstrap<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-python" style="color:#3578a8"></i>Python<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-git-alt" style="color:#e44d26"></i>Git<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-brands fa-github"></i>GitHub<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-solid fa-pen-nib" style="color:#ff9a00"></i>Illustrator<span class="mq-sep">//</span></span>
-  <span class="mq-item"><i class="fa-solid fa-layer-group" style="color:#1e8be8"></i>Photoshop<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 452 520" style="width:14px;height:14px;flex-shrink:0"><path fill="#e34f26" d="M41 460L0 0h451l-41 460-185 52z"/><path fill="#ef652a" d="M226 472l149-41 35-394H226z"/><path fill="#fff" d="M226 208h-75l-5-58h80V94H84l15 150h127zm0 147l-64-17-4-45h-56l7 89 117 32z"/><path fill="#ebebeb" d="M226 208v56h70l-7 73-63 17v59l116-32 9-173zm0-114v56h137l-4-56z"/></svg>HTML5<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 452 520" style="width:14px;height:14px;flex-shrink:0"><path fill="#264de4" d="M41 460L0 0h451l-41 460-185 52z"/><path fill="#2965f1" d="M226 472l149-41 35-394H226z"/><path fill="#fff" d="M226 208H151l-5-58h80V94H84l15 150h127zm0 147l-64-17-4-45h-56l7 89 117 32z"/><path fill="#ebebeb" d="M226 208v56h68l-7 73-61 17v59l116-32 9-173zm0-114v56h136l-4-56z"/></svg>CSS3<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 630 630" style="width:14px;height:14px;flex-shrink:0"><rect width="630" height="630" fill="#f7df1e"/><path d="M423 492c8 13 19 23 38 23 16 0 26-8 26-19 0-13-10-18-28-26l-10-4c-27-12-45-26-45-57 0-28 22-50 56-50 24 0 42 8 54 30l-30 19c-6-12-13-16-24-16s-18 6-18 14c0 10 6 14 21 20l10 4c32 14 50 28 50 60 0 34-27 52-63 52-35 0-58-17-69-39zm-120 4c6 10 11 19 23 19 12 0 19-5 19-22V300h38v195c0 36-21 53-52 53-28 0-44-15-52-32z"/></svg>JavaScript<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="-11.5 -10.23 23 20.46" style="width:14px;height:14px;flex-shrink:0"><circle r="2.05" fill="#61dafb"/><g stroke="#61dafb" stroke-width="1" fill="none"><ellipse rx="11" ry="4.2"/><ellipse rx="11" ry="4.2" transform="rotate(60)"/><ellipse rx="11" ry="4.2" transform="rotate(120)"/></g></svg>React JS<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 248 31" style="width:22px;height:12px;flex-shrink:0"><path fill="#06b6d4" d="M25.517 0C18.712 0 14.46 3.382 12.758 10.146c2.552-3.382 5.529-4.65 8.931-3.805 1.941.482 3.329 1.882 4.864 3.432 2.502 2.524 5.398 5.445 11.722 5.445 6.804 0 11.057-3.382 12.758-10.145-2.551 3.382-5.528 4.65-8.93 3.804-1.942-.482-3.33-1.882-4.865-3.431C34.736 2.92 31.841 0 25.517 0zM12.758 15.218C5.954 15.218 1.701 18.6 0 25.364c2.552-3.382 5.529-4.65 8.93-3.805 1.942.482 3.33 1.882 4.865 3.432 2.502 2.524 5.397 5.445 11.722 5.445 6.804 0 11.057-3.381 12.758-10.145-2.552 3.382-5.529 4.65-8.931 3.805-1.941-.483-3.329-1.883-4.864-3.432-2.502-2.524-5.398-5.446-11.722-5.446z"/></svg>Tailwind<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 118.8 94.2" style="width:14px;height:14px;flex-shrink:0"><path fill="#7952b3" d="M108 0H10.8A10.8 10.8 0 0 0 0 10.8v72.6a10.8 10.8 0 0 0 10.8 10.8H108a10.8 10.8 0 0 0 10.8-10.8V10.8A10.8 10.8 0 0 0 108 0z"/><path fill="#fff" d="M41.85 64.95H29.25V29.25H41.1c6.9 0 10.8 3.3 10.8 8.85a8.42 8.42 0 0 1-5.55 8v.15a8.67 8.67 0 0 1 7.05 8.85c0 6.3-4.5 9.85-11.55 9.85zm41.1-17.25c0 11.1-6.6 17.55-17.4 17.55h-12.9V29.25h13.2c10.65 0 17.1 6.3 17.1 18.45zM40.35 38.1H37.2v8.25h3.15c3.3 0 5.25-1.5 5.25-4.2s-1.95-4.05-5.25-4.05zm1.65 16.8H37.2V56h4.8c3.45 0 5.4-1.65 5.4-4.5 0-2.85-2.1-4.6-5.4-4.6zm25.95-16.5h-4.8V56h4.8c5.85 0 8.7-3.6 8.7-9.3 0-5.55-2.85-8.25-8.7-8.25z"/></svg>Bootstrap<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 92 92" style="width:14px;height:14px;flex-shrink:0"><path fill="#f05033" d="M90.156 41.965 50.036 1.848a5.918 5.918 0 0 0-8.372 0l-8.328 8.332 10.566 10.566a7.03 7.03 0 0 1 7.23 1.684 7.043 7.043 0 0 1 1.669 7.277l10.187 10.184a7.028 7.028 0 0 1 7.278 1.672 7.04 7.04 0 0 1 0 9.957 7.05 7.05 0 0 1-9.965 0 7.044 7.044 0 0 1-1.528-7.66l-9.5-9.497V59.36a7.04 7.04 0 0 1 1.86 11.29 7.04 7.04 0 0 1-9.957 0 7.04 7.04 0 0 1 0-9.958 7.06 7.06 0 0 1 2.304-1.553V33.033a7.049 7.049 0 0 1-3.82-9.234L29.623 13.16 1.85 40.937a5.918 5.918 0 0 0 0 8.371L41.97 90.156a5.92 5.92 0 0 0 8.372 0l39.814-39.82a5.92 5.92 0 0 0 0-8.371"/></svg>Git<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 24 24" style="width:14px;height:14px;flex-shrink:0"><path fill="#181717" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 240 234" style="width:14px;height:14px;flex-shrink:0"><path fill="#ff9a00" d="M42.5 0h155C221 0 240 19 240 42.5v149c0 23.5-19 42.5-42.5 42.5h-155C19 234 0 215 0 191.5v-149C0 19 19 0 42.5 0z"/><path fill="#fff" d="M116 140H78.8l-9 28.1c-.2.9-1 1.4-2.3 1.4H50.7c-1.3 0-1.7-.7-1.3-2L83.6 67.7c.4-1.1.8-2.2 1.3-3.7.5-2.1.7-4.3.8-6.5 0-.8.4-1.2 1-1.2h24.6c.8 0 1.3.3 1.3.9l35.9 110.2c.4 1.3 0 2-1.3 2H128c-1.1 0-1.9-.4-2.1-1.3zm-32-20h26.6l-8.3-27.4c-.9-3-1.9-6.4-2.9-10.1-1-3.8-2-7.4-2.8-10.9h-.4c-.8 3.6-1.7 7.3-2.6 11-1 3.8-2 7.2-2.9 10.2z"/></svg>Illustrator<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 240 234" style="width:14px;height:14px;flex-shrink:0"><path fill="#001e36" d="M42.5 0h155C221 0 240 19 240 42.5v149c0 23.5-19 42.5-42.5 42.5h-155C19 234 0 215 0 191.5v-149C0 19 19 0 42.5 0z"/><path fill="#31a8ff" d="M54 164V68.3h30.4c6.5 0 12 .8 16.6 2.5 4.6 1.6 8.2 4 10.8 7.1 2.6 3.1 4 6.8 4 11 0 3.4-.8 6.4-2.3 9.1-1.5 2.7-3.7 4.9-6.4 6.7-2.7 1.8-5.8 3-9.4 3.7v.4c3.8.3 7.3 1.3 10.5 3 3.2 1.7 5.7 4 7.6 6.9 1.9 2.9 2.9 6.3 2.9 10.1 0 4.5-1.2 8.5-3.5 11.9-2.3 3.4-5.8 6.1-10.2 8-4.5 1.9-9.9 2.9-16.4 2.9H54z"/></svg>Photoshop<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 38 57" style="width:12px;height:14px;flex-shrink:0"><path fill="#1abcfe" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path fill="#0acf83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z"/><path fill="#ff7262" d="M19 0v19h9.5a9.5 9.5 0 0 0 0-19z"/><path fill="#f24e1e" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path fill="#a259ff" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg>Figma<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 46 46" style="width:14px;height:14px;flex-shrink:0"><path fill="#cc785c" d="M22.745 0c-.51 1.74-1.01 3.48-1.521 5.22a1.88 1.88 0 0 1-.49.87c-.47.42-1.1.56-1.711.67a12.87 12.87 0 0 0-1.74.44 1.51 1.51 0 0 0-.79.65c-.23.42-.17.93-.08 1.39.18.92.45 1.82.52 2.76.07.89-.07 1.82-.56 2.57a4.88 4.88 0 0 1-1.83 1.52 12.79 12.79 0 0 1-2.69 1.02 1.55 1.55 0 0 0-.92.58c-.27.43-.22.97-.11 1.45.23 1 .64 1.97.74 2.99.1.97-.12 2.01-.76 2.75-.58.67-1.4 1.06-2.2 1.4a13.6 13.6 0 0 1-2.51.77c-.51.1-1.06.19-1.45.55-.42.38-.53.97-.55 1.52-.04 1.09.18 2.17.13 3.26-.05.85-.32 1.73-.93 2.34-.55.55-1.29.81-2.01 1.02C1.5 35.78.74 35.94 0 36.07v.05c1.02.18 2.04.36 3.06.54.72.13 1.46.27 2.08.68.7.46 1.1 1.23 1.36 2.01.28.85.43 1.74.69 2.59.14.47.32.96.66 1.31.36.38.86.55 1.36.65a13.46 13.46 0 0 0 2.62.23c.88.01 1.79.01 2.61.35.75.31 1.32.93 1.74 1.62.45.74.75 1.56 1.17 2.31.22.4.49.8.88 1.06.41.27.9.34 1.38.38 1.04.07 2.09.01 3.13.08.83.06 1.71.26 2.33.83.55.51.82 1.24 1.04 1.96l1.62 5.22h.05l1.62-5.22c.22-.72.49-1.45 1.04-1.96.62-.57 1.5-.77 2.33-.83 1.04-.07 2.09-.01 3.13-.08.48-.04.97-.11 1.38-.38.39-.26.66-.66.88-1.06.42-.75.72-1.57 1.17-2.31.42-.69.99-1.31 1.74-1.62.82-.34 1.73-.34 2.61-.35a13.46 13.46 0 0 0 2.62-.23c.5-.1 1-.27 1.36-.65.34-.35.52-.84.66-1.31.26-.85.41-1.74.69-2.59.26-.78.66-1.55 1.36-2.01.62-.41 1.36-.55 2.08-.68l3.06-.54v-.05c-.74-.13-1.5-.29-2.24-.52-.72-.21-1.46-.47-2.01-1.02-.61-.61-.88-1.49-.93-2.34-.05-1.09.17-2.17.13-3.26-.02-.55-.13-1.14-.55-1.52-.39-.36-.94-.45-1.45-.55a13.6 13.6 0 0 1-2.51-.77c-.8-.34-1.62-.73-2.2-1.4-.64-.74-.86-1.78-.76-2.75.1-1.02.51-1.99.74-2.99.11-.48.16-1.02-.11-1.45a1.55 1.55 0 0 0-.92-.58 12.79 12.79 0 0 1-2.69-1.02 4.88 4.88 0 0 1-1.83-1.52c-.49-.75-.63-1.68-.56-2.57.07-.94.34-1.84.52-2.76.09-.46.15-.97-.08-1.39a1.51 1.51 0 0 0-.79-.65 12.87 12.87 0 0 0-1.74-.44c-.611-.11-1.241-.25-1.711-.67a1.88 1.88 0 0 1-.49-.87C23.755 3.48 23.255 1.74 22.745 0Z"/></svg>Claude AI<span class="mq-sep">//</span></span>
+  <!-- duplicate for seamless loop -->
+  <span class="mq-item"><svg viewBox="0 0 452 520" style="width:14px;height:14px;flex-shrink:0"><path fill="#e34f26" d="M41 460L0 0h451l-41 460-185 52z"/><path fill="#ef652a" d="M226 472l149-41 35-394H226z"/><path fill="#fff" d="M226 208h-75l-5-58h80V94H84l15 150h127zm0 147l-64-17-4-45h-56l7 89 117 32z"/><path fill="#ebebeb" d="M226 208v56h70l-7 73-63 17v59l116-32 9-173zm0-114v56h137l-4-56z"/></svg>HTML5<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 452 520" style="width:14px;height:14px;flex-shrink:0"><path fill="#264de4" d="M41 460L0 0h451l-41 460-185 52z"/><path fill="#2965f1" d="M226 472l149-41 35-394H226z"/><path fill="#fff" d="M226 208H151l-5-58h80V94H84l15 150h127zm0 147l-64-17-4-45h-56l7 89 117 32z"/><path fill="#ebebeb" d="M226 208v56h68l-7 73-61 17v59l116-32 9-173zm0-114v56h136l-4-56z"/></svg>CSS3<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 630 630" style="width:14px;height:14px;flex-shrink:0"><rect width="630" height="630" fill="#f7df1e"/><path d="M423 492c8 13 19 23 38 23 16 0 26-8 26-19 0-13-10-18-28-26l-10-4c-27-12-45-26-45-57 0-28 22-50 56-50 24 0 42 8 54 30l-30 19c-6-12-13-16-24-16s-18 6-18 14c0 10 6 14 21 20l10 4c32 14 50 28 50 60 0 34-27 52-63 52-35 0-58-17-69-39zm-120 4c6 10 11 19 23 19 12 0 19-5 19-22V300h38v195c0 36-21 53-52 53-28 0-44-15-52-32z"/></svg>JavaScript<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="-11.5 -10.23 23 20.46" style="width:14px;height:14px;flex-shrink:0"><circle r="2.05" fill="#61dafb"/><g stroke="#61dafb" stroke-width="1" fill="none"><ellipse rx="11" ry="4.2"/><ellipse rx="11" ry="4.2" transform="rotate(60)"/><ellipse rx="11" ry="4.2" transform="rotate(120)"/></g></svg>React JS<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 248 31" style="width:22px;height:12px;flex-shrink:0"><path fill="#06b6d4" d="M25.517 0C18.712 0 14.46 3.382 12.758 10.146c2.552-3.382 5.529-4.65 8.931-3.805 1.941.482 3.329 1.882 4.864 3.432 2.502 2.524 5.398 5.445 11.722 5.445 6.804 0 11.057-3.382 12.758-10.145-2.551 3.382-5.528 4.65-8.93 3.804-1.942-.482-3.33-1.882-4.865-3.431C34.736 2.92 31.841 0 25.517 0zM12.758 15.218C5.954 15.218 1.701 18.6 0 25.364c2.552-3.382 5.529-4.65 8.93-3.805 1.942.482 3.33 1.882 4.865 3.432 2.502 2.524 5.397 5.445 11.722 5.445 6.804 0 11.057-3.381 12.758-10.145-2.552 3.382-5.529 4.65-8.931 3.805-1.941-.483-3.329-1.883-4.864-3.432-2.502-2.524-5.398-5.446-11.722-5.446z"/></svg>Tailwind<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 118.8 94.2" style="width:14px;height:14px;flex-shrink:0"><path fill="#7952b3" d="M108 0H10.8A10.8 10.8 0 0 0 0 10.8v72.6a10.8 10.8 0 0 0 10.8 10.8H108a10.8 10.8 0 0 0 10.8-10.8V10.8A10.8 10.8 0 0 0 108 0z"/><path fill="#fff" d="M41.85 64.95H29.25V29.25H41.1c6.9 0 10.8 3.3 10.8 8.85a8.42 8.42 0 0 1-5.55 8v.15a8.67 8.67 0 0 1 7.05 8.85c0 6.3-4.5 9.85-11.55 9.85zm41.1-17.25c0 11.1-6.6 17.55-17.4 17.55h-12.9V29.25h13.2c10.65 0 17.1 6.3 17.1 18.45zM40.35 38.1H37.2v8.25h3.15c3.3 0 5.25-1.5 5.25-4.2s-1.95-4.05-5.25-4.05zm1.65 16.8H37.2V56h4.8c3.45 0 5.4-1.65 5.4-4.5 0-2.85-2.1-4.6-5.4-4.6zm25.95-16.5h-4.8V56h4.8c5.85 0 8.7-3.6 8.7-9.3 0-5.55-2.85-8.25-8.7-8.25z"/></svg>Bootstrap<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 92 92" style="width:14px;height:14px;flex-shrink:0"><path fill="#f05033" d="M90.156 41.965 50.036 1.848a5.918 5.918 0 0 0-8.372 0l-8.328 8.332 10.566 10.566a7.03 7.03 0 0 1 7.23 1.684 7.043 7.043 0 0 1 1.669 7.277l10.187 10.184a7.028 7.028 0 0 1 7.278 1.672 7.04 7.04 0 0 1 0 9.957 7.05 7.05 0 0 1-9.965 0 7.044 7.044 0 0 1-1.528-7.66l-9.5-9.497V59.36a7.04 7.04 0 0 1 1.86 11.29 7.04 7.04 0 0 1-9.957 0 7.04 7.04 0 0 1 0-9.958 7.06 7.06 0 0 1 2.304-1.553V33.033a7.049 7.049 0 0 1-3.82-9.234L29.623 13.16 1.85 40.937a5.918 5.918 0 0 0 0 8.371L41.97 90.156a5.92 5.92 0 0 0 8.372 0l39.814-39.82a5.92 5.92 0 0 0 0-8.371"/></svg>Git<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 24 24" style="width:14px;height:14px;flex-shrink:0"><path fill="#181717" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 38 57" style="width:12px;height:14px;flex-shrink:0"><path fill="#1abcfe" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path fill="#0acf83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z"/><path fill="#ff7262" d="M19 0v19h9.5a9.5 9.5 0 0 0 0-19z"/><path fill="#f24e1e" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path fill="#a259ff" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg>Figma<span class="mq-sep">//</span></span>
+  <span class="mq-item"><svg viewBox="0 0 46 46" style="width:14px;height:14px;flex-shrink:0"><path fill="#cc785c" d="M22.745 0c-.51 1.74-1.01 3.48-1.521 5.22a1.88 1.88 0 0 1-.49.87c-.47.42-1.1.56-1.711.67a12.87 12.87 0 0 0-1.74.44 1.51 1.51 0 0 0-.79.65c-.23.42-.17.93-.08 1.39.18.92.45 1.82.52 2.76.07.89-.07 1.82-.56 2.57a4.88 4.88 0 0 1-1.83 1.52 12.79 12.79 0 0 1-2.69 1.02 1.55 1.55 0 0 0-.92.58c-.27.43-.22.97-.11 1.45.23 1 .64 1.97.74 2.99.1.97-.12 2.01-.76 2.75-.58.67-1.4 1.06-2.2 1.4a13.6 13.6 0 0 1-2.51.77c-.51.1-1.06.19-1.45.55-.42.38-.53.97-.55 1.52-.04 1.09.18 2.17.13 3.26-.05.85-.32 1.73-.93 2.34-.55.55-1.29.81-2.01 1.02C1.5 35.78.74 35.94 0 36.07v.05c1.02.18 2.04.36 3.06.54.72.13 1.46.27 2.08.68.7.46 1.1 1.23 1.36 2.01.28.85.43 1.74.69 2.59.14.47.32.96.66 1.31.36.38.86.55 1.36.65a13.46 13.46 0 0 0 2.62.23c.88.01 1.79.01 2.61.35.75.31 1.32.93 1.74 1.62.45.74.75 1.56 1.17 2.31.22.4.49.8.88 1.06.41.27.9.34 1.38.38 1.04.07 2.09.01 3.13.08.83.06 1.71.26 2.33.83.55.51.82 1.24 1.04 1.96l1.62 5.22h.05l1.62-5.22c.22-.72.49-1.45 1.04-1.96.62-.57 1.5-.77 2.33-.83 1.04-.07 2.09-.01 3.13-.08.48-.04.97-.11 1.38-.38.39-.26.66-.66.88-1.06.42-.75.72-1.57 1.17-2.31.42-.69.99-1.31 1.74-1.62.82-.34 1.73-.34 2.61-.35a13.46 13.46 0 0 0 2.62-.23c.5-.1 1-.27 1.36-.65.34-.35.52-.84.66-1.31.26-.85.41-1.74.69-2.59.26-.78.66-1.55 1.36-2.01.62-.41 1.36-.55 2.08-.68l3.06-.54v-.05c-.74-.13-1.5-.29-2.24-.52-.72-.21-1.46-.47-2.01-1.02-.61-.61-.88-1.49-.93-2.34-.05-1.09.17-2.17.13-3.26-.02-.55-.13-1.14-.55-1.52-.39-.36-.94-.45-1.45-.55a13.6 13.6 0 0 1-2.51-.77c-.8-.34-1.62-.73-2.2-1.4-.64-.74-.86-1.78-.76-2.75.1-1.02.51-1.99.74-2.99.11-.48.16-1.02-.11-1.45a1.55 1.55 0 0 0-.92-.58 12.79 12.79 0 0 1-2.69-1.02 4.88 4.88 0 0 1-1.83-1.52c-.49-.75-.63-1.68-.56-2.57.07-.94.34-1.84.52-2.76.09-.46.15-.97-.08-1.39a1.51 1.51 0 0 0-.79-.65 12.87 12.87 0 0 0-1.74-.44c-.611-.11-1.241-.25-1.711-.67a1.88 1.88 0 0 1-.49-.87C23.755 3.48 23.255 1.74 22.745 0Z"/></svg>Claude AI<span class="mq-sep">//</span></span>
 </div></div>
 
 <!-- ════ ABOUT ════ -->
@@ -718,7 +484,6 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
       <img src="moi.jpg" alt="Bassirou Mbacké" class="acard-img"
         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <div class="acard-ph" style="display:none"><i class="fa-solid fa-user-tie"></i></div>
-      <div class="acard-badge"><div class="badge-n">3</div><div class="badge-l">Mois stage</div></div>
       <div class="acard-overlay">
         <div class="nm">Bassirou Mbacké</div>
         <div class="rl">// Dev Web & Mobile · Graphiste</div>
@@ -726,14 +491,24 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
     </div>
     <div class="atext sa-r">
       <h3>Je transforme tes idées en <em>expériences digitales.</em></h3>
-      <p>Je m'appelle <strong>Bassirou Mbacké</strong>, développeur Web &amp; Mobile passionné et graphiste autodidacte. Je combine développement et design pour créer des applications <strong>fonctionnelles, esthétiques et intuitives</strong>.</p>
-      <p>Curieux, autonome et rigoureux, je sais travailler en équipe et gérer des missions efficacement — individuellement ou collectivement.</p>
-      <p>Formé à la <strong>Bakeli School of Technology</strong>, j'ai effectué un stage de 3 mois chez <strong>Volkeno</strong> où j'ai livré des projets réels en <strong>React JS</strong> et <strong>React Native</strong>.</p>
+      <p>Je m'appelle <strong>Bassirou Mbacké</strong>, développeur Web & Mobile passionné et graphiste autodidacte. Je combine développement et design pour créer des applications <strong>fonctionnelles, esthétiques et intuitives</strong>.</p>
+      <p>Formé à la <strong>Bakeli School of Technology</strong> — une école de formation digitale à Dakar axée sur la pratique — j'ai effectué un stage de 3 mois chez <strong>Volkeno</strong>, entreprise tech dakaroise spécialisée en transformation digitale, où j'ai livré des projets réels.</p>
+      <p>En parallèle, j'ai <strong>3 ans d'expérience freelance</strong> en graphisme pour des clients variés. Je sais <strong>me débrouiller seul</strong> : recherche, documentation, résolution de problèmes de zéro — c'est ma façon de grandir.</p>
+
+      <div class="traits-row sa">
+        <span class="trait">Autonome</span>
+        <span class="trait">Curieux</span>
+        <span class="trait">Rigoureux</span>
+        <span class="trait">Auto-didacte</span>
+        <span class="trait">Esprit d'équipe</span>
+        <span class="trait">Professionnel</span>
+      </div>
+
       <div class="irows">
         <div class="irow sa d1"><i class="fa-solid fa-phone"></i><span>+221 77 661 66 19</span></div>
         <div class="irow sa d2"><i class="fa-solid fa-envelope"></i><a href="mailto:cheikhbass2001@gmail.com">cheikhbass2001@gmail.com</a></div>
         <div class="irow sa d3"><i class="fa-solid fa-location-dot"></i><span>Dakar, Sénégal 🇸🇳</span></div>
-        <div class="irow sa d4"><i class="fa-brands fa-github"></i><a href="#" target="_blank">github.com/bassirou-mbacke</a></div>
+        <div class="irow sa d4"><i class="fa-brands fa-github"></i><a href="https://github.com/cheikh234" target="_blank">github.com/cheikh234</a></div>
         <div class="irow sa d5"><i class="fa-brands fa-linkedin"></i><a href="#" target="_blank">linkedin.com/in/bassirou-mbacke</a></div>
       </div>
     </div>
@@ -744,33 +519,166 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
 <section id="skills">
   <div class="eyebrow sa">Compétences</div>
   <h2 class="stitle sa">Technologies <em>&amp; Outils</em></h2>
-  <p class="ssub sa">Arsenal maîtrisé — du front-end moderne aux outils créatifs.</p>
+  <p class="ssub sa">Arsenal maîtrisé — du front-end moderne aux outils créatifs et à l'IA.</p>
 
+  <!-- Front-End maîtrisé -->
+  <div class="sk-section-lbl sa">✅ Front-End — Maîtrisé</div>
   <div class="sk-grid">
-    <div class="sk-card sa-flip d1"><i class="fa-brands fa-html5" style="color:#e44d26"></i><span class="sk-name">HTML5</span></div>
-    <div class="sk-card sa-flip d2"><i class="fa-brands fa-css3-alt" style="color:#264de4"></i><span class="sk-name">CSS3</span></div>
-    <div class="sk-card sa-flip d3"><i class="fa-brands fa-js" style="color:#d4a800"></i><span class="sk-name">JavaScript</span></div>
-    <div class="sk-card sa-flip d4"><i class="fa-brands fa-react" style="color:#18a8c5"></i><span class="sk-name">React JS</span></div>
-    <div class="sk-card sa-flip d5"><i class="fa-solid fa-mobile-screen" style="color:#18a8c5"></i><span class="sk-name">React Native</span></div>
-    <div class="sk-card sa-flip d6"><i class="fa-solid fa-wind" style="color:#0ea5e9"></i><span class="sk-name">Tailwind</span></div>
-    <div class="sk-card sa-flip d7"><i class="fa-brands fa-bootstrap" style="color:#6d42b3"></i><span class="sk-name">Bootstrap</span></div>
-    <div class="sk-card sa-flip d8"><i class="fa-brands fa-python" style="color:#2f6898"></i><span class="sk-name">Python</span></div>
-    <div class="sk-card sa-flip d9"><span class="emi" style="font-size:2rem;line-height:1">🟢</span><span class="sk-name">Django</span></div>
-    <div class="sk-card sa-flip d10"><i class="fa-brands fa-git-alt" style="color:#d94a26"></i><span class="sk-name">Git</span></div>
-    <div class="sk-card sa-flip d11"><i class="fa-brands fa-github" style="color:#1c1c2e"></i><span class="sk-name">GitHub</span></div>
-    <div class="sk-card sa-flip d12"><i class="fa-solid fa-cloud-arrow-up" style="color:#555"></i><span class="sk-name">Vercel</span></div>
-    <div class="sk-card sa-flip d13"><i class="fa-solid fa-pen-nib" style="color:#e08800"></i><span class="sk-name">Illustrator</span></div>
-    <div class="sk-card sa-flip d14"><i class="fa-solid fa-layer-group" style="color:#1070cc"></i><span class="sk-name">Photoshop</span></div>
-    <div class="sk-card sa-flip d15"><i class="fa-solid fa-video" style="color:#009ab0"></i><span class="sk-name">CapCut</span></div>
+    <!-- HTML5 -->
+    <div class="sk-card sa-flip d1">
+      <svg viewBox="0 0 452 520" style="width:2.1rem;height:2.1rem"><path fill="#e34f26" d="M41 460L0 0h451l-41 460-185 52z"/><path fill="#ef652a" d="M226 472l149-41 35-394H226z"/><path fill="#fff" d="M226 208h-75l-5-58h80V94H84l15 150h127zm0 147l-64-17-4-45h-56l7 89 117 32z"/><path fill="#ebebeb" d="M226 208v56h70l-7 73-63 17v59l116-32 9-173zm0-114v56h137l-4-56z"/></svg>
+      <span class="sk-name">HTML5</span>
+    </div>
+    <!-- CSS3 -->
+    <div class="sk-card sa-flip d2">
+      <svg viewBox="0 0 452 520" style="width:2.1rem;height:2.1rem"><path fill="#264de4" d="M41 460L0 0h451l-41 460-185 52z"/><path fill="#2965f1" d="M226 472l149-41 35-394H226z"/><path fill="#fff" d="M226 208H151l-5-58h80V94H84l15 150h127zm0 147l-64-17-4-45h-56l7 89 117 32z"/><path fill="#ebebeb" d="M226 208v56h68l-7 73-61 17v59l116-32 9-173zm0-114v56h136l-4-56z"/></svg>
+      <span class="sk-name">CSS3</span>
+    </div>
+    <!-- JS -->
+    <div class="sk-card sa-flip d3">
+      <svg viewBox="0 0 630 630" style="width:2.1rem;height:2.1rem"><rect width="630" height="630" fill="#f7df1e"/><path d="M423 492c8 13 19 23 38 23 16 0 26-8 26-19 0-13-10-18-28-26l-10-4c-27-12-45-26-45-57 0-28 22-50 56-50 24 0 42 8 54 30l-30 19c-6-12-13-16-24-16s-18 6-18 14c0 10 6 14 21 20l10 4c32 14 50 28 50 60 0 34-27 52-63 52-35 0-58-17-69-39zm-120 4c6 10 11 19 23 19 12 0 19-5 19-22V300h38v195c0 36-21 53-52 53-28 0-44-15-52-32z"/></svg>
+      <span class="sk-name">JavaScript</span>
+    </div>
+    <!-- React -->
+    <div class="sk-card sa-flip d4">
+      <svg viewBox="-11.5 -10.23 23 20.46" style="width:2.1rem;height:2.1rem"><circle r="2.05" fill="#61dafb"/><g stroke="#61dafb" stroke-width="1" fill="none"><ellipse rx="11" ry="4.2"/><ellipse rx="11" ry="4.2" transform="rotate(60)"/><ellipse rx="11" ry="4.2" transform="rotate(120)"/></g></svg>
+      <span class="sk-name">React JS</span>
+    </div>
+    <!-- React Native -->
+    <div class="sk-card sa-flip d5">
+      <svg viewBox="0 0 24 24" style="width:2.1rem;height:2.1rem"><path fill="#61dafb" d="M12 10.11A1.89 1.89 0 1 1 10.11 12 1.9 1.9 0 0 1 12 10.11M7.37 20c.63.38 2.01-.2 3.6-1.7a24.22 24.22 0 0 1-1.51-1.9A22.7 22.7 0 0 1 7.06 16c-.51 2.14-.32 3.61.31 4m.71-5.74-.29-.51a7.27 7.27 0 0 0-.29.86c.27.06.57.11.88.16l-.3-.51m6.54-.76.81-1.5-.81-1.5c-.3-.53-.62-1-.91-1.47C13.17 9 12.6 9 12 9s-1.17 0-1.71.03c-.29.47-.61.94-.91 1.47L8.57 12l.81 1.5c.3.53.62 1 .91 1.47.54.03 1.11.03 1.71.03s1.17 0 1.71-.03c.29-.47.61-.94.91-1.47M12 6.78c-.19.22-.39.45-.59.72h1.18c-.2-.27-.4-.5-.59-.72m0 10.44c.19-.22.39-.45.59-.72h-1.18c.2.27.4.5.59.72M16.62 4c-.62-.38-2 .2-3.59 1.7.53.51 1.06 1.18 1.51 1.9.82.07 1.63.19 2.4.37.51-2.14.32-3.61-.32-3.97m-.7 5.74.29.51.29-.86c-.27-.06-.57-.11-.88-.16l.3.51m1.45-7.05c1.47.84 1.63 3.05 1.01 5.63 2.54.75 4.37 1.99 4.37 3.68s-1.83 2.93-4.37 3.68c.62 2.58.46 4.79-1.01 5.63-1.46.84-3.45-.12-5.37-1.95-1.92 1.83-3.91 2.79-5.38 1.95-1.46-.84-1.62-3.05-1-5.63C2.09 14.93.26 13.69.26 12s1.83-2.93 4.37-3.68C4.01 5.74 4.17 3.53 5.64 2.69c1.46-.84 3.45.12 5.37 1.95 1.92-1.83 3.91-2.79 5.37-1.95z"/></svg>
+      <span class="sk-name">React Native</span>
+    </div>
+    <!-- Tailwind -->
+    <div class="sk-card sa-flip d6">
+      <svg viewBox="0 0 248 31" style="width:2.6rem;height:1.3rem"><path fill="#06b6d4" d="M25.517 0C18.712 0 14.46 3.382 12.758 10.146c2.552-3.382 5.529-4.65 8.931-3.805 1.941.482 3.329 1.882 4.864 3.432 2.502 2.524 5.398 5.445 11.722 5.445 6.804 0 11.057-3.382 12.758-10.145-2.551 3.382-5.528 4.65-8.93 3.804-1.942-.482-3.33-1.882-4.865-3.431C34.736 2.92 31.841 0 25.517 0zM12.758 15.218C5.954 15.218 1.701 18.6 0 25.364c2.552-3.382 5.529-4.65 8.93-3.805 1.942.482 3.33 1.882 4.865 3.432 2.502 2.524 5.397 5.445 11.722 5.445 6.804 0 11.057-3.381 12.758-10.145-2.552 3.382-5.529 4.65-8.931 3.805-1.941-.483-3.329-1.883-4.864-3.432-2.502-2.524-5.398-5.446-11.722-5.446z"/></svg>
+      <span class="sk-name">Tailwind</span>
+    </div>
+    <!-- Bootstrap -->
+    <div class="sk-card sa-flip d7">
+      <svg viewBox="0 0 118.8 94.2" style="width:2.1rem;height:2.1rem"><path fill="#7952b3" d="M108 0H10.8A10.8 10.8 0 0 0 0 10.8v72.6a10.8 10.8 0 0 0 10.8 10.8H108a10.8 10.8 0 0 0 10.8-10.8V10.8A10.8 10.8 0 0 0 108 0zM41.85 64.95H29.25V29.25H41.1c6.9 0 10.8 3.3 10.8 8.85a8.42 8.42 0 0 1-5.55 8v.15a8.67 8.67 0 0 1 7.05 8.85c0 6.3-4.5 9.85-11.55 9.85zm41.1-17.25c0 11.1-6.6 17.55-17.4 17.55h-12.9V29.25h13.2c10.65 0 17.1 6.3 17.1 18.45zM40.35 38.1H37.2v8.25h3.15c3.3 0 5.25-1.5 5.25-4.2s-1.95-4.05-5.25-4.05zm1.65 16.8H37.2V56h4.8c3.45 0 5.4-1.65 5.4-4.5 0-2.85-2.1-4.6-5.4-4.6zm25.95-16.5h-4.8V56h4.8c5.85 0 8.7-3.6 8.7-9.3 0-5.55-2.85-8.25-8.7-8.25v-.05z"/></svg>
+      <span class="sk-name">Bootstrap</span>
+    </div>
+    <!-- Figma -->
+    <div class="sk-card sa-flip d8">
+      <svg viewBox="0 0 38 57" style="width:1.7rem;height:2.1rem"><path fill="#1abcfe" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path fill="#0acf83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z"/><path fill="#ff7262" d="M19 0v19h9.5a9.5 9.5 0 0 0 0-19z"/><path fill="#f24e1e" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path fill="#a259ff" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg>
+      <span class="sk-name">Figma</span>
+    </div>
   </div>
 
-  <div class="sp-grid">
-    <div class="sp sa d1"><div class="sp-ico"><i class="fa-solid fa-display" style="color:var(--neon)"></i></div><div class="sp-ttl">Front-End Web</div><div class="sp-tags"><span class="sp-tag">HTML5</span><span class="sp-tag">CSS3</span><span class="sp-tag">JavaScript</span><span class="sp-tag">React JS</span></div></div>
+  <!-- Intégration API -->
+  <div class="sk-section-lbl sa">🔗 Intégration API REST — Je connecte le front au back</div>
+  <div class="sk-grid" style="grid-template-columns:repeat(4,1fr)">
+    <!-- REST API -->
+    <div class="sk-card sa-flip d1">
+      <svg viewBox="0 0 24 24" style="width:2.1rem;height:2.1rem"><path fill="#6d28d9" d="M2 12C2 6.48 6.48 2 12 2s10 4.48 10 10-4.48 10-10 10S2 17.52 2 12zm10 6c3.31 0 6-2.69 6-6s-2.69-6-6-6-6 2.69-6 6 2.69 6 6 6zm1-9h-2v3H8v2h3v3h2v-3h3v-2h-3z"/></svg>
+      <span class="sk-name">REST API</span>
+    </div>
+    <!-- Axios -->
+    <div class="sk-card sa-flip d2">
+      <svg viewBox="0 0 128 128" style="width:2.1rem;height:2.1rem"><path fill="#5a29e4" d="M64 0C28.7 0 0 28.7 0 64s28.7 64 64 64 64-28.7 64-64S99.3 0 64 0zm29 92.3-7.8-2.6L64 48 42.8 89.7l-7.8 2.6L64 30l29 62.3z"/></svg>
+      <span class="sk-name">Fetch / Axios</span>
+    </div>
+    <!-- JWT -->
+    <div class="sk-card sa-flip d3">
+      <svg viewBox="0 0 24 24" style="width:2.1rem;height:2.1rem"><path fill="#d63aff" d="M10.748 0l.72 2.255H13.5l-1.69 1.268.62 2.05L10.748 4.32l-1.68 1.253.62-2.05L8 2.255h2.032zM3.94 7.116l.72 2.255H6.7L5 10.638l.62 2.05-1.68-1.252-1.683 1.252.62-2.05-1.69-1.267H2.82zm13.12 0 .72 2.255h2.04l-1.69 1.267.62 2.05-1.68-1.252-1.683 1.252.62-2.05-1.69-1.267H16.34zm-6.56 7.116.72 2.254h2.04l-1.69 1.267.62 2.051-1.68-1.253-1.683 1.253.62-2.051-1.69-1.267H9.78zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+      <span class="sk-name">Auth JWT</span>
+    </div>
+    <!-- Firebase -->
+    <div class="sk-card sa-flip d4">
+      <svg viewBox="0 0 32 32" style="width:2.1rem;height:2.1rem"><path fill="#ffa000" d="M1 28.7 8.05 2.74a.51.51 0 0 1 .97.05l3.73 10.36z"/><path fill="#f57f17" d="M18.51 17.76 12.75 13.15l5.54-10.26a.51.51 0 0 1 .94.12z"/><path fill="#ffca28" d="M1 28.7l.2-.16 10.26-18.22 7.15 5.44z"/><path fill="#ffa000" d="m18.61 17.83 4.76-2.74L31 28.7a1.05 1.05 0 0 1-1 1.5H2a1.05 1.05 0 0 1-.98-1.5z"/><path fill="#f57f17" d="m18.51 17.76 4.86-2.67 4.71 13.25-9.57-10.58z"/></svg>
+      <span class="sk-name">Firebase</span>
+    </div>
+  </div>
+
+  <!-- Back-end en cours -->
+  <div class="sk-section-lbl sa">⚙️ Back-End — En cours (projets réalisés durant stage)</div>
+  <div class="sk-grid" style="grid-template-columns:repeat(4,1fr)">
+    <!-- Python -->
+    <div class="sk-card wip sa-flip d1">
+      <svg viewBox="0 0 110 110" style="width:2.1rem;height:2.1rem"><path fill="#3776ab" d="M54.9 1C38.7 1 39.8 8 39.8 8l.1 7.3h15.3v2.2H26.7S15 16 15 32.4s9.8 16 9.8 16h5.9v-7.8s-.3-9.8 9.6-9.8h16.6s9.3.1 9.3-9V9.2S67.5 1 54.9 1zM46.5 6c1.7 0 3 1.3 3 3s-1.3 3-3 3-3-1.3-3-3 1.3-3 3-3z"/><path fill="#ffd43b" d="M55.1 109c16.2 0 15.1-7 15.1-7l-.1-7.3H54.8V92.5H83.3s11.7 1.3 11.7-15.1S85.2 61.4 85.2 61.4h-5.9v7.8s.3 9.8-9.6 9.8H53.1s-9.3-.1-9.3 9V91.8s-1.2 17.2 11.3 17.2zm8.4-5c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z"/></svg>
+      <span class="sk-name">Python</span><span class="wip-badge">En cours</span>
+    </div>
+    <!-- Django -->
+    <div class="sk-card wip sa-flip d2">
+      <svg viewBox="0 0 24 24" style="width:2.1rem;height:2.1rem"><path fill="#0c4b33" d="M11.146 0h3.924v18.166c-2.013.382-3.491.535-5.096.535-4.791 0-7.288-2.166-7.288-6.32 0-4.002 2.65-6.6 6.753-6.6.637 0 1.121.05 1.707.203zm0 9.143a3.894 3.894 0 0 0-1.325-.204c-1.988 0-3.134 1.223-3.134 3.365 0 2.09 1.096 3.236 3.109 3.236.433 0 .79-.025 1.35-.102zM21.314 6.06v11.49c0 3.97-.287 5.88-1.121 7.523-.78 1.59-1.809 2.59-3.926 3.694l-3.64-1.725c2.116-1 3.145-1.92 3.79-3.285.666-1.389.893-3.033.893-7.345V6.06z"/></svg>
+      <span class="sk-name">Django</span><span class="wip-badge">En cours</span>
+    </div>
+    <!-- PostgreSQL -->
+    <div class="sk-card wip sa-flip d3">
+      <svg viewBox="0 0 24 24" style="width:2.1rem;height:2.1rem"><path fill="#336791" d="M17.128 0a10.134 10.134 0 0 0-2.755.403l-.063.02A10.922 10.922 0 0 0 12.6.258C11.422.238 10.41.524 9.594 1.042A11.174 11.174 0 0 0 8.428.736a9.021 9.021 0 0 0-2.13-.028C4.646.94 3.28 1.723 2.276 2.986 1.272 4.249.765 5.891.828 7.723c.027.782.21 1.562.512 2.302.302.74.716 1.416 1.217 1.985a6.093 6.093 0 0 0 1.816 1.338 5.85 5.85 0 0 0 2.173.515 5.99 5.99 0 0 0 1.19-.099c.054.56.08 1.103.09 1.62v.17l-.004.166-.006.15a9.12 9.12 0 0 1-.086.87 3.97 3.97 0 0 1-.283.93 1.545 1.545 0 0 1-.593.673 1.905 1.905 0 0 1-.962.224c-.381 0-.76-.089-1.12-.267L6.576 18l-.037.02a3.508 3.508 0 0 0-.616.391c-.17.137-.316.291-.43.455a1.29 1.29 0 0 0-.2.484.898.898 0 0 0 .054.447c.107.265.3.472.527.608a3.3 3.3 0 0 0 .786.305 5.7 5.7 0 0 0 .943.163c.336.03.67.04.994.03a7.26 7.26 0 0 0 .957-.118 5.59 5.59 0 0 0 .927-.29c.323-.14.618-.316.876-.533l.019-.015c.26-.22.48-.49.654-.8a3.6 3.6 0 0 0 .35-.985c.088-.378.141-.775.165-1.177.024-.4.024-.807.003-1.209l-.013-.293a27.224 27.224 0 0 0-.063-1.205c.45.062.917.09 1.396.086 1.97-.01 3.753-.575 5.084-1.665 1.33-1.09 2.064-2.613 2.108-4.42.03-1.22-.29-2.39-.928-3.393a6.83 6.83 0 0 0-2.447-2.348A8.98 8.98 0 0 0 17.127 0z"/></svg>
+      <span class="sk-name">PostgreSQL</span><span class="wip-badge">En cours</span>
+    </div>
+    <!-- Render -->
+    <div class="sk-card wip sa-flip d4">
+      <svg viewBox="0 0 24 24" style="width:2.1rem;height:2.1rem"><path fill="#46e3b7" d="M0 11.998c0 6.627 5.373 12 12 12s12-5.373 12-12S18.627 0 12 0C5.37 0 0 5.37 0 11.998zm10.44 4.394L6.04 7.934h2.427l2.912 5.715 2.91-5.715h2.375l-5.223 10.174z"/></svg>
+      <span class="sk-name">Render</span><span class="wip-badge">En cours</span>
+    </div>
+  </div>
+
+  <!-- DevOps & Outils -->
+  <div class="sk-section-lbl sa">🛠 DevOps, Outils & Collaboration</div>
+  <div class="sk-grid">
+    <!-- Git -->
+    <div class="sk-card sa-flip d1">
+      <svg viewBox="0 0 92 92" style="width:2.1rem;height:2.1rem"><path fill="#f05033" d="M90.156 41.965 50.036 1.848a5.918 5.918 0 0 0-8.372 0l-8.328 8.332 10.566 10.566a7.03 7.03 0 0 1 7.23 1.684 7.043 7.043 0 0 1 1.669 7.277l10.187 10.184a7.028 7.028 0 0 1 7.278 1.672 7.04 7.04 0 0 1 0 9.957 7.05 7.05 0 0 1-9.965 0 7.044 7.044 0 0 1-1.528-7.66l-9.5-9.497V59.36a7.04 7.04 0 0 1 1.86 11.29 7.04 7.04 0 0 1-9.957 0 7.04 7.04 0 0 1 0-9.958 7.06 7.06 0 0 1 2.304-1.553V33.033a7.049 7.049 0 0 1-3.82-9.234L29.623 13.16 1.85 40.937a5.918 5.918 0 0 0 0 8.371L41.97 90.156a5.92 5.92 0 0 0 8.372 0l39.814-39.82a5.92 5.92 0 0 0 0-8.371"/></svg>
+      <span class="sk-name">Git</span>
+    </div>
+    <!-- GitHub -->
+    <div class="sk-card sa-flip d2">
+      <svg viewBox="0 0 24 24" style="width:2.1rem;height:2.1rem"><path fill="#181717" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      <span class="sk-name">GitHub</span>
+    </div>
+    <!-- Vercel -->
+    <div class="sk-card sa-flip d3">
+      <svg viewBox="0 0 24 24" style="width:2.1rem;height:2.1rem"><path fill="#000000" d="M24 22.525H0l12-21.05z"/></svg>
+      <span class="sk-name">Vercel</span>
+    </div>
+    <!-- ClickUp -->
+    <div class="sk-card sa-flip d4">
+      <svg viewBox="0 0 50 56" style="width:2.1rem;height:2.1rem"><path fill="#7b68ee" d="M0 42.239l8.043-6.113c4.176 5.498 8.62 8.013 13.397 8.013 4.743 0 9.05-2.489 13.088-7.934l8.1 6.036C36.21 50.448 29.39 54.847 21.44 54.847 13.527 54.847 6.662 50.478 0 42.239z"/><path fill="#00c7c7" d="M21.499 13.47L8.142 25.576.098 16.907 21.499 0l21.402 16.934-8.085 8.641z"/></svg>
+      <span class="sk-name">ClickUp</span>
+    </div>
+    <!-- Discord -->
+    <div class="sk-card sa-flip d5">
+      <svg viewBox="0 0 127.14 96.36" style="width:2.4rem;height:1.8rem"><path fill="#5865f2" d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15zM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69z"/></svg>
+      <span class="sk-name">Discord</span>
+    </div>
+  </div>
+
+  <!-- Créatif & IA -->
+  <div class="sk-section-lbl sa">✨ Design, Vidéo & IA</div>
+  <div class="sk-grid">
+    <!-- Illustrator -->
+    <div class="sk-card sa-flip d1">
+      <svg viewBox="0 0 240 234" style="width:2.1rem;height:2.1rem"><path fill="#ff9a00" d="M42.5 0h155C221 0 240 19 240 42.5v149c0 23.5-19 42.5-42.5 42.5h-155C19 234 0 215 0 191.5v-149C0 19 19 0 42.5 0z"/><path fill="#fff" d="M116 140H78.8l-9 28.1c-.2.9-1 1.4-2.3 1.4H50.7c-1.3 0-1.7-.7-1.3-2L83.6 67.7c.4-1.1.8-2.2 1.3-3.7.5-2.1.7-4.3.8-6.5 0-.8.4-1.2 1-1.2h24.6c.8 0 1.3.3 1.3.9l35.9 110.2c.4 1.3 0 2-1.3 2H128c-1.1 0-1.9-.4-2.1-1.3zm-32-20h26.6l-8.3-27.4c-.9-3-1.9-6.4-2.9-10.1-1-3.8-2-7.4-2.8-10.9h-.4c-.8 3.6-1.7 7.3-2.6 11-1 3.8-2 7.2-2.9 10.2zm78.1 10.2c0-5.9 1.1-11.1 3.4-15.5 2.3-4.4 5.4-8 9.1-10.8 3.8-2.8 8.1-4.8 12.9-6.1 5-1.4 10.2-2.1 15.6-2.2V94c0-5.5-1.8-8.2-5.5-8.2-1.5 0-3 .5-4.5 1.5-1.5 1-2.8 2.3-3.9 4-1.1 1.7-2 3.8-2.7 6.2-.7 2.4-1 5.1-1 8.1h-20.7c.2-5.7 1.2-10.8 3.1-15.3 1.9-4.6 4.5-8.5 7.9-11.7 3.4-3.2 7.4-5.7 12-7.3 4.7-1.7 9.9-2.5 15.7-2.5 5.4 0 10.1.7 14.1 2.1 4.1 1.4 7.5 3.4 10.2 6 2.7 2.6 4.7 5.8 6 9.6 1.3 3.8 2 8 2 12.7v50c0 3.7.2 7.2.6 10.5.4 3.3 1 6.1 1.8 8.4h-20.5c-.7-1.4-1.2-3-1.7-5-.5-2-.8-4.1-.9-6.2h-.3c-2.4 4-5.3 7-8.9 9-3.6 2-7.7 3-12.2 3-3.6 0-6.9-.5-9.7-1.6-2.8-1-5.2-2.6-7.2-4.6-2-2-3.5-4.3-4.6-7.1-.9-2.8-1.4-5.8-1.4-9.2zm22.4-3.6c0 3 .8 5.3 2.3 6.9 1.5 1.6 3.6 2.4 6.2 2.4 2 0 4-.5 5.8-1.6 1.8-1 3.4-2.4 4.8-4.1 1.4-1.7 2.4-3.6 3.2-5.8.8-2.2 1.1-4.5 1.1-6.7v-8.8c-3 0-5.8.4-8.2 1.3-2.4.9-4.5 2.1-6.2 3.6-1.7 1.5-3 3.2-3.9 5.2-.7 2-1.1 4.2-1.1 6.6z"/></svg>
+      <span class="sk-name">Illustrator</span>
+    </div>
+    <!-- Photoshop -->
+    <div class="sk-card sa-flip d2">
+      <svg viewBox="0 0 240 234" style="width:2.1rem;height:2.1rem"><path fill="#001e36" d="M42.5 0h155C221 0 240 19 240 42.5v149c0 23.5-19 42.5-42.5 42.5h-155C19 234 0 215 0 191.5v-149C0 19 19 0 42.5 0z"/><path fill="#31a8ff" d="M54 164V68.3h30.4c6.5 0 12 .8 16.6 2.5 4.6 1.6 8.2 4 10.8 7.1 2.6 3.1 4 6.8 4 11 0 3.4-.8 6.4-2.3 9.1-1.5 2.7-3.7 4.9-6.4 6.7-2.7 1.8-5.8 3-9.4 3.7v.4c3.8.3 7.3 1.3 10.5 3 3.2 1.7 5.7 4 7.6 6.9 1.9 2.9 2.9 6.3 2.9 10.1 0 4.5-1.2 8.5-3.5 11.9-2.3 3.4-5.8 6.1-10.2 8-4.5 1.9-9.9 2.9-16.4 2.9H54zm18.8-56.1h12.3c2.2 0 4.2-.4 6-1.1 1.8-.7 3.2-1.8 4.2-3.3 1-1.4 1.5-3.1 1.5-5 0-2.9-1-5.1-3-6.6-2-1.5-4.7-2.3-8.3-2.3H72.8v18.3zm0 41.1h13.4c4.3 0 7.6-.9 9.9-2.8 2.3-1.8 3.5-4.4 3.5-7.6 0-2.1-.5-3.9-1.5-5.5-1-1.6-2.5-2.8-4.4-3.7-2-1-4.4-1.4-7.2-1.4H72.8v21zm83.5 2c2.1 1.1 4.5 1.7 7 1.7 4.4 0 7.6-1.5 9.7-4.4 2.1-2.9 3.1-7.1 3.1-12.7 0-4.6-.8-8.1-2.4-10.5-1.6-2.4-3.9-3.6-6.8-3.6-2.5 0-4.7.8-6.6 2.4-1.9 1.6-3.3 3.7-4.1 6.4v20.7zm-.2-38.7c1.4-2.8 3.3-4.9 5.8-6.5 2.5-1.6 5.2-2.3 8.2-2.3 3.3 0 6.3.9 9.1 2.8 2.8 1.8 5 4.7 6.7 8.5 1.7 3.8 2.5 8.7 2.5 14.7 0 6.3-1 11.5-2.9 15.7-2 4.2-4.6 7.4-7.9 9.5-3.3 2.1-7 3.2-10.9 3.2-2.6 0-5-.5-7.1-1.5-2.1-1-3.9-2.4-5.4-4.2h-.3l-1.8 4.7H139V64h17.1v38.3z"/></svg>
+      <span class="sk-name">Photoshop</span>
+    </div>
+    <!-- CapCut -->
+    <div class="sk-card sa-flip d3">
+      <svg viewBox="0 0 100 100" style="width:2.1rem;height:2.1rem"><rect width="100" height="100" rx="22" fill="#000"/><path fill="#fff" d="M50 18c-6.6 0-12 5.4-12 12s5.4 12 12 12 12-5.4 12-12-5.4-12-12-12zm0 18c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6zM50 58c-6.6 0-12 5.4-12 12s5.4 12 12 12 12-5.4 12-12-5.4-12-12-12zm0 18c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6zM30 47h40v6H30z"/></svg>
+      <span class="sk-name">CapCut</span>
+    </div>
+    <!-- Claude AI -->
+    <div class="sk-card sa-flip d4">
+      <svg viewBox="0 0 46 46" style="width:2.1rem;height:2.1rem"><path fill="#cc785c" d="M22.745 0c-.51 1.74-1.01 3.48-1.521 5.22a1.88 1.88 0 0 1-.49.87c-.47.42-1.1.56-1.711.67a12.87 12.87 0 0 0-1.74.44 1.51 1.51 0 0 0-.79.65c-.23.42-.17.93-.08 1.39.18.92.45 1.82.52 2.76.07.89-.07 1.82-.56 2.57a4.88 4.88 0 0 1-1.83 1.52 12.79 12.79 0 0 1-2.69 1.02 1.55 1.55 0 0 0-.92.58c-.27.43-.22.97-.11 1.45.23 1 .64 1.97.74 2.99.1.97-.12 2.01-.76 2.75-.58.67-1.4 1.06-2.2 1.4a13.6 13.6 0 0 1-2.51.77c-.51.1-1.06.19-1.45.55-.42.38-.53.97-.55 1.52-.04 1.09.18 2.17.13 3.26-.05.85-.32 1.73-.93 2.34-.55.55-1.29.81-2.01 1.02C1.5 35.78.74 35.94 0 36.07v.05c1.02.18 2.04.36 3.06.54.72.13 1.46.27 2.08.68.7.46 1.1 1.23 1.36 2.01.28.85.43 1.74.69 2.59.14.47.32.96.66 1.31.36.38.86.55 1.36.65a13.46 13.46 0 0 0 2.62.23c.88.01 1.79.01 2.61.35.75.31 1.32.93 1.74 1.62.45.74.75 1.56 1.17 2.31.22.4.49.8.88 1.06.41.27.9.34 1.38.38 1.04.07 2.09.01 3.13.08.83.06 1.71.26 2.33.83.55.51.82 1.24 1.04 1.96l1.62 5.22h.05l1.62-5.22c.22-.72.49-1.45 1.04-1.96.62-.57 1.5-.77 2.33-.83 1.04-.07 2.09-.01 3.13-.08.48-.04.97-.11 1.38-.38.39-.26.66-.66.88-1.06.42-.75.72-1.57 1.17-2.31.42-.69.99-1.31 1.74-1.62.82-.34 1.73-.34 2.61-.35a13.46 13.46 0 0 0 2.62-.23c.5-.1 1-.27 1.36-.65.34-.35.52-.84.66-1.31.26-.85.41-1.74.69-2.59.26-.78.66-1.55 1.36-2.01.62-.41 1.36-.55 2.08-.68l3.06-.54v-.05c-.74-.13-1.5-.29-2.24-.52-.72-.21-1.46-.47-2.01-1.02-.61-.61-.88-1.49-.93-2.34-.05-1.09.17-2.17.13-3.26-.02-.55-.13-1.14-.55-1.52-.39-.36-.94-.45-1.45-.55a13.6 13.6 0 0 1-2.51-.77c-.8-.34-1.62-.73-2.2-1.4-.64-.74-.86-1.78-.76-2.75.1-1.02.51-1.99.74-2.99.11-.48.16-1.02-.11-1.45a1.55 1.55 0 0 0-.92-.58 12.79 12.79 0 0 1-2.69-1.02 4.88 4.88 0 0 1-1.83-1.52c-.49-.75-.63-1.68-.56-2.57.07-.94.34-1.84.52-2.76.09-.46.15-.97-.08-1.39a1.51 1.51 0 0 0-.79-.65 12.87 12.87 0 0 0-1.74-.44c-.611-.11-1.241-.25-1.711-.67a1.88 1.88 0 0 1-.49-.87C23.755 3.48 23.255 1.74 22.745 0Z"/></svg>
+      <span class="sk-name">Claude AI</span>
+    </div>
+  </div>
+
+  <!-- Panels catégories -->
+  <div class="sp-grid" style="margin-top:3.5rem">
+    <div class="sp sa d1"><div class="sp-ico"><i class="fa-solid fa-display" style="color:var(--neon)"></i></div><div class="sp-ttl">Front-End Web</div><div class="sp-tags"><span class="sp-tag">HTML5</span><span class="sp-tag">CSS3</span><span class="sp-tag">JavaScript</span><span class="sp-tag">React JS</span><span class="sp-tag">Tailwind</span><span class="sp-tag">Bootstrap</span></div></div>
     <div class="sp sa d2"><div class="sp-ico"><i class="fa-solid fa-mobile-screen" style="color:var(--neon)"></i></div><div class="sp-ttl">Mobile</div><div class="sp-tags"><span class="sp-tag">React Native</span><span class="sp-tag">UI/UX Mobile</span></div></div>
-    <div class="sp sa d3"><div class="sp-ico"><i class="fa-solid fa-server" style="color:var(--neon)"></i></div><div class="sp-ttl">Back-End</div><div class="sp-tags"><span class="sp-tag">Python</span><span class="sp-tag">Django</span><span class="sp-tag">PostgreSQL</span><span class="sp-tag">JWT</span><span class="sp-tag">Firebase</span></div></div>
-    <div class="sp sa d4"><div class="sp-ico"><i class="fa-brands fa-git-alt" style="color:var(--neon)"></i></div><div class="sp-ttl">DevOps & Deploy</div><div class="sp-tags"><span class="sp-tag">Git</span><span class="sp-tag">GitHub</span><span class="sp-tag">Vercel</span><span class="sp-tag">Render</span></div></div>
-    <div class="sp sa d5"><div class="sp-ico"><i class="fa-solid fa-pen-nib" style="color:var(--neon)"></i></div><div class="sp-ttl">Design Graphique</div><div class="sp-tags"><span class="sp-tag">Illustrator</span><span class="sp-tag">Photoshop</span><span class="sp-tag">CapCut</span></div></div>
-    <div class="sp sa d6"><div class="sp-ico"><i class="fa-solid fa-palette" style="color:var(--neon)"></i></div><div class="sp-ttl">UI Frameworks</div><div class="sp-tags"><span class="sp-tag">Tailwind CSS</span><span class="sp-tag">Bootstrap</span></div></div>
+    <div class="sp sa d3"><div class="sp-ico"><i class="fa-solid fa-plug" style="color:var(--neon)"></i></div><div class="sp-ttl">Intégration API</div><div class="sp-tags"><span class="sp-tag">REST API</span><span class="sp-tag">Fetch / Axios</span><span class="sp-tag">JWT</span><span class="sp-tag">Firebase</span></div></div>
+    <div class="sp wip-panel sa d4"><div class="sp-ico"><i class="fa-solid fa-server" style="color:var(--neon)"></i></div><div class="sp-ttl">Back-End (stage)</div><div class="sp-tags"><span class="sp-tag">Python</span><span class="sp-tag">Django</span><span class="sp-tag">PostgreSQL</span><span class="sp-tag">Render</span></div></div>
+    <div class="sp sa d5"><div class="sp-ico"><i class="fa-brands fa-git-alt" style="color:var(--neon)"></i></div><div class="sp-ttl">DevOps & Collab</div><div class="sp-tags"><span class="sp-tag">Git</span><span class="sp-tag">GitHub</span><span class="sp-tag">Vercel</span><span class="sp-tag">ClickUp</span><span class="sp-tag">Discord</span></div></div>
+    <div class="sp sa d6"><div class="sp-ico"><i class="fa-solid fa-pen-nib" style="color:var(--neon)"></i></div><div class="sp-ttl">Design & IA</div><div class="sp-tags"><span class="sp-tag">Illustrator</span><span class="sp-tag">Photoshop</span><span class="sp-tag">Figma</span><span class="sp-tag">CapCut</span><span class="sp-tag">Claude AI</span></div></div>
   </div>
 </section>
 
@@ -779,26 +687,76 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
   <div class="eyebrow sa">Parcours</div>
   <h2 class="stitle sa">Formation <em>&amp; Expérience</em></h2>
   <div class="tl">
+
+    <!-- Bakeli -->
     <div class="tl-row sa">
-      <div class="tl-side"><div class="tl-yr">2024<br>—2025</div><span class="tl-bdg tb-f">Formation</span></div>
+      <div class="tl-side">
+        <img src="baklii.jpg" alt="Bakeli School of Technology" class="tl-org-photo"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="tl-org-photo-ph" style="display:none"><i class="fa-solid fa-school"></i></div>
+        <div class="tl-yr">2024<br>—2025</div>
+        <span class="tl-bdg tb-f">Formation</span>
+      </div>
       <div class="tl-body">
         <h3>Bakeli School of Technology</h3>
-        <div class="tl-role">// Développement Web &amp; Mobile</div>
-        <p>Formation complète : HTML, CSS, JS, React, React Native, Python, Django, PostgreSQL, API REST, JWT/Firebase, déploiement Vercel &amp; Render.</p>
-      </div>
-    </div>
-    <div class="tl-row sa d3">
-      <div class="tl-side"><div class="tl-yr">2025<br>3 mois</div><span class="tl-bdg tb-s">Stage</span></div>
-      <div class="tl-body">
-        <h3>Volkeno</h3>
-        <div class="tl-role">// Développeur Front-End · Web &amp; Mobile</div>
-        <p>Projets livrés en conditions réelles :</p>
+        <div class="tl-role">// Développement Web &amp; Mobile · Dakar</div>
+        <p>École de formation digitale à Dakar axée sur la pratique et la préparation au monde professionnel. Formation complète sur tout l'écosystème du développement web et mobile :</p>
         <ul>
-          <li><strong>Red Product</strong> — React + Django + PostgreSQL, auth JWT/Firebase, déployé Vercel/Render</li>
-          <li><strong>Tektal</strong> — Application mobile React Native, UI, navigation, Agile</li>
+          <li><strong>Front-End</strong> — HTML5, CSS3, JavaScript ES6+, React JS, React Native</li>
+          <li><strong>UI Frameworks</strong> — Tailwind CSS, Bootstrap</li>
+          <li><strong>Outils & Versionning</strong> — Git, GitHub, Vercel, déploiement cloud</li>
+          <li><strong>Collaboration</strong> — Méthodes agiles, travail en équipe, projets réels</li>
         </ul>
       </div>
     </div>
+
+    <!-- Volkeno -->
+    <div class="tl-row sa d3">
+      <div class="tl-side">
+        <img src="volkk.jpg" alt="Volkeno" class="tl-org-photo"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="tl-org-photo-ph" style="display:none"><i class="fa-solid fa-building"></i></div>
+        <div class="tl-yr">2025<br>3 mois</div>
+        <span class="tl-bdg tb-s">Stage</span>
+      </div>
+      <div class="tl-body">
+        <h3>Volkeno</h3>
+        <div class="tl-role">// Développeur Front-End · Web &amp; Mobile</div>
+        <p>Entreprise tech dakaroise spécialisée en développement d'applications et transformation digitale. Projets livrés en conditions réelles dans un environnement professionnel :</p>
+        <ul>
+          <li><strong>Red Product</strong> — React JS + Django + PostgreSQL, auth JWT/Firebase, déployé Vercel &amp; Render</li>
+          <li><strong>Tektal</strong> — Application mobile React Native, UI, navigation, Agile</li>
+          <li><strong>Intégration API REST</strong> — connexion endpoints back-end, gestion des états, auth tokens</li>
+        </ul>
+        <div class="collab-row">
+          <span class="collab-tag"><i class="fa-brands fa-github"></i>Git / GitHub</span>
+          <span class="collab-tag"><i class="fa-solid fa-users"></i>Équipe Agile</span>
+          <span class="collab-tag">📋 ClickUp</span>
+          <span class="collab-tag"><i class="fa-brands fa-discord"></i>Discord</span>
+          <span class="collab-tag"><i class="fa-solid fa-code-branch"></i>Code Review</span>
+          <span class="collab-tag"><i class="fa-solid fa-rocket"></i>Déploiement</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Freelance Graphiste -->
+    <div class="tl-row freelance sa d5">
+      <div class="tl-side">
+        <div class="tl-org-photo-ph"><i class="fa-solid fa-pen-nib" style="color:rgba(240,192,64,.3)"></i></div>
+        <div class="tl-yr">2022<br>—2025</div>
+        <span class="tl-bdg tb-freelance">Freelance</span>
+      </div>
+      <div class="tl-body">
+        <h3>Graphiste Freelance</h3>
+        <div class="tl-role" style="color:#f0c040">// Design Graphique · 3 ans</div>
+        <p>3 ans d'expérience en design graphique. Identités visuelles, affiches, contenus réseaux sociaux, flyers, montage vidéo.</p>
+        <ul>
+          <li><strong>Outils</strong> — Adobe Illustrator, Photoshop, CapCut</li>
+          <li><strong>Approche</strong> — autonomie totale, gestion de projet, respect des délais</li>
+        </ul>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -814,26 +772,34 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
     <button class="fbtn" onclick="pf('video',this)"><i class="fa-solid fa-video"></i> Vidéo</button>
   </div>
   <div class="pgrid">
+
+    <!-- Web projects -->
     <div class="pcard show sa-z d1" data-cat="web">
       <div class="pthumb"><i class="pthumb-ph fa-solid fa-cart-shopping"></i><img src="sunumango.jpg" alt="Sunumango" onerror="this.style.display='none'"><div class="pov"><a href="https://www.sunumango.com" target="_blank" class="plnk"><i class="fa-solid fa-arrow-up-right-from-square"></i></a><a href="https://github.com/cheikh234" target="_blank" class="plnk"><i class="fa-brands fa-github"></i></a></div></div>
       <div class="pbody"><div class="pcat">E-Commerce</div><h3>Sunumango</h3><p>Boutique en ligne : panier, filtres dynamiques, mobile-first.</p><div class="pstack"><span class="ptag">React JS</span><span class="ptag">Tailwind</span><span class="ptag">JS</span></div></div>
     </div>
+
     <div class="pcard show sa-z d2" data-cat="web">
       <div class="pthumb"><i class="pthumb-ph fa-solid fa-building"></i><img src="bostlander.jpg" alt="Bostlander" onerror="this.style.display='none'"><div class="pov"><a href="https://cheikh234.github.io/BOOTSLANDER/" target="_blank" class="plnk"><i class="fa-solid fa-arrow-up-right-from-square"></i></a><a href="https://github.com/cheikh234/BOOTSLANDER" target="_blank" class="plnk"><i class="fa-brands fa-github"></i></a></div></div>
       <div class="pbody"><div class="pcat">Corporate</div><h3>Bostlander</h3><p>Site vitrine avec animations avancées et formulaire de contact.</p><div class="pstack"><span class="ptag">HTML5</span><span class="ptag">CSS3</span><span class="ptag">JS</span></div></div>
     </div>
+
     <div class="pcard show sa-z d3" data-cat="web">
       <div class="pthumb"><i class="pthumb-ph fa-solid fa-globe"></i><img src="parana.jpg" alt="Parana" onerror="this.style.display='none'"><div class="pov"><a href="https://cheikh234.github.io/cloneparada/" target="_blank" class="plnk"><i class="fa-solid fa-arrow-up-right-from-square"></i></a><a href="https://github.com/cheikh234/cloneparada" target="_blank" class="plnk"><i class="fa-brands fa-github"></i></a></div></div>
       <div class="pbody"><div class="pcat">Web App</div><h3>Parana</h3><p>Application web, gestion de données et déploiement cloud.</p><div class="pstack"><span class="ptag">React JS</span><span class="ptag">Bootstrap</span><span class="ptag">CSS3</span></div></div>
     </div>
+
     <div class="pcard show sa-z d4" data-cat="web">
       <div class="pthumb"><i class="pthumb-ph fa-brands fa-react" style="color:rgba(32,184,213,.18)"></i><img src="reacttt.jpg" alt="Reacttt" onerror="this.style.display='none'"><div class="pov"><a href="https://ocas-nu.vercel.app/" target="_blank" class="plnk"><i class="fa-solid fa-arrow-up-right-from-square"></i></a><a href="https://github.com/cheikh234" target="_blank" class="plnk"><i class="fa-brands fa-github"></i></a></div></div>
-      <div class="pbody"><div class="pcat">Front-End</div><h3>Reacttt</h3><p>Projet React avancé : composants réutilisables, hooks, state.</p><div class="pstack"><span class="ptag">React JS</span><span class="ptag">Tailwind</span><span class="ptag">Vercel</span></div></div>
+      <div class="pbody"><div class="pcat">Front-End</div><h3>Reacttt</h3><p>Projet React avancé : composants réutilisables, hooks, state management.</p><div class="pstack"><span class="ptag">React JS</span><span class="ptag">Tailwind</span><span class="ptag">Vercel</span></div></div>
     </div>
+
     <div class="pcard show sa-z d5" data-cat="web">
       <div class="pthumb"><i class="pthumb-ph fa-solid fa-database"></i><img src="selecao.jpg" alt="Selecao" onerror="this.style.display='none'"><div class="pov"><a href="https://cheikh234.github.io/seleco/" target="_blank" class="plnk"><i class="fa-solid fa-arrow-up-right-from-square"></i></a><a href="https://github.com/cheikh234/seleco" target="_blank" class="plnk"><i class="fa-brands fa-github"></i></a></div></div>
-      <div class="pbody"><div class="pcat">Stage · Volkeno</div><h3>Selecao</h3><p>App full-stack, auth JWT/Firebase, déployé Vercel + Render.</p><div class="pstack"><span class="ptag">React JS</span><span class="ptag">Django</span><span class="ptag">PostgreSQL</span></div></div>
+      <div class="pbody"><div class="pcat">Stage · Volkeno · Full-Stack</div><h3>Selecao</h3><p>App full-stack, auth JWT/Firebase, front React connecté à une API Django déployée sur Render.</p><div class="pstack"><span class="ptag">React JS</span><span class="ptag">Django API</span><span class="ptag">PostgreSQL</span><span class="ptag">JWT</span></div></div>
     </div>
+
+    <!-- Design -->
     <div class="pcard show sa-z d6" data-cat="design" onclick="openLb(0)" style="cursor:pointer">
       <div class="pthumb" style="background:#0a0c08">
         <i class="pthumb-ph fa-solid fa-images"></i>
@@ -849,16 +815,41 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
         <div style="position:absolute;top:8px;right:8px;background:var(--neon);color:var(--bg);font-family:var(--mono);font-size:.54rem;letter-spacing:.15em;padding:.2rem .6rem;z-index:3;font-weight:500;border-radius:3px">5 VISUELS</div>
         <div class="pov"><i class="fa-solid fa-expand" style="font-size:1.6rem;color:var(--neon)"></i></div>
       </div>
-      <div class="pbody"><div class="pcat">Infographie · 5 créations</div><h3>Identité Visuelle</h3><p>Yango · Orange · Kirene · Sengal · Délice — réseaux sociaux et affiches.</p><div class="pstack"><span class="ptag">Illustrator</span><span class="ptag">Photoshop</span></div></div>
+      <div class="pbody"><div class="pcat">Infographie · 5 créations · Freelance</div><h3>Identité Visuelle</h3><p>Yango · Orange · Kirene · Sengal · Délice — réseaux sociaux, affiches, identités de marque.</p><div class="pstack"><span class="ptag">Illustrator</span><span class="ptag">Photoshop</span><span class="ptag">Freelance</span></div></div>
     </div>
+
+    <!-- Vidéo — React Native App -->
     <div class="pcard show sa-z" data-cat="video">
-      <div class="pthumb" style="background:linear-gradient(135deg,#0a0e14,#060e14);cursor:pointer" onclick="openVid()">
+      <div class="pthumb" style="background:linear-gradient(135deg,#0a0e14,#060e14);cursor:pointer" onclick="openVid('reactnative.mp4','// React Native App — Volkeno')">
         <i class="pthumb-ph fa-brands fa-react" style="color:rgba(32,184,213,.12)"></i>
         <video src="reactnative.mp4" id="vid-rn" muted loop playsinline preload="metadata" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none" onerror="this.style.display='none'"></video>
         <div class="pov"><div style="width:54px;height:54px;background:rgba(57,255,20,.1);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;border-radius:8px"><i class="fa-solid fa-expand" style="color:var(--neon);font-size:1.2rem"></i></div></div>
       </div>
-      <div class="pbody"><div class="pcat">Stage · Volkeno · Mobile</div><h3>React Native App</h3><p>Application mobile complète — UI, navigation, collaboration Agile.</p><div class="pstack"><span class="ptag">React Native</span><span class="ptag">JS</span><span class="ptag">UI/UX</span></div></div>
+      <div class="pbody"><div class="pcat">Stage · Volkeno · Mobile</div><h3>React Native App</h3><p>Application mobile complète — UI, navigation, collaboration Agile en équipe.</p><div class="pstack"><span class="ptag">React Native</span><span class="ptag">JS</span><span class="ptag">UI/UX</span></div></div>
     </div>
+
+    <!-- Vidéo — Red Product -->
+    <div class="pcard show sa-z" data-cat="video">
+      <div class="pthumb" style="background:linear-gradient(135deg,#140a08,#1a0606);cursor:pointer" onclick="openVid('IMG_3935.MP4','// Red Product — Volkeno')">
+        <i class="pthumb-ph fa-solid fa-database" style="color:rgba(255,80,80,.12)"></i>
+        <video src="IMG_3935.MP4" id="vid-rp" muted loop playsinline preload="metadata" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none" onerror="this.style.display='none'"></video>
+        <div style="position:absolute;top:8px;left:8px;background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#f87171;font-family:var(--mono);font-size:.52rem;letter-spacing:.15em;padding:.2rem .55rem;border-radius:3px;z-index:3">STAGE</div>
+        <div class="pov"><div style="width:54px;height:54px;background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.3);display:flex;align-items:center;justify-content:center;border-radius:8px"><i class="fa-solid fa-expand" style="color:#f87171;font-size:1.2rem"></i></div></div>
+      </div>
+      <div class="pbody"><div class="pcat">Stage · Volkeno · Full-Stack</div><h3>Red Product</h3><p>Projet full-stack complet — React JS front, API Django REST, PostgreSQL, auth JWT, déployé Vercel + Render.</p><div class="pstack"><span class="ptag">React JS</span><span class="ptag">Django API</span><span class="ptag">PostgreSQL</span><span class="ptag">JWT</span><span class="ptag">Vercel</span></div></div>
+    </div>
+
+    <!-- Vidéo — BRTT CapCut -->
+    <div class="pcard show sa-z" data-cat="video">
+      <div class="pthumb" style="background:linear-gradient(135deg,#0a0814,#0c0814);cursor:pointer" onclick="openVid('brtt.mov','// BRTT — Montage CapCut')">
+        <i class="pthumb-ph fa-solid fa-video" style="color:rgba(57,255,20,.12)"></i>
+        <video src="brtt.mov" id="vid-brtt" muted loop playsinline preload="metadata" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none" onerror="this.style.display='none'"></video>
+        <div style="position:absolute;top:8px;left:8px;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.25);color:var(--neon);font-family:var(--mono);font-size:.52rem;letter-spacing:.15em;padding:.2rem .55rem;border-radius:3px;z-index:3">CAPCUT</div>
+        <div class="pov"><div style="width:54px;height:54px;background:rgba(57,255,20,.1);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;border-radius:8px"><i class="fa-solid fa-expand" style="color:var(--neon);font-size:1.2rem"></i></div></div>
+      </div>
+      <div class="pbody"><div class="pcat">Montage Vidéo · CapCut</div><h3>BRTT</h3><p>Montage vidéo créatif réalisé avec CapCut — effets, transitions et rythme visuel.</p><div class="pstack"><span class="ptag">CapCut</span><span class="ptag">Montage</span><span class="ptag">Motion</span></div></div>
+    </div>
+
   </div>
 </section>
 
@@ -869,31 +860,57 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
   <div class="contact-wrap">
     <div class="cleft sa-l">
       <h3>Un projet ?<br><em>Je suis dispo.</em></h3>
-      <p>Dev web &amp; mobile, design UI/UX, montage vidéo ou opportunité — je réponds vite et efficacement.</p>
+      <p>Dev web & mobile, design UI/UX, montage vidéo ou opportunité professionnelle — contacte-moi directement sur WhatsApp ou LinkedIn.</p>
       <div class="clinks">
-        <a href="tel:+221776616619" class="clink sa d1"><div class="cico"><i class="fa-solid fa-phone"></i></div><div><div class="clbl">Téléphone</div><div class="cval">+221 77 661 66 19</div></div><i class="fa-solid fa-chevron-right cchev"></i></a>
-        <a href="mailto:cheikhbass2001@gmail.com" class="clink sa d2"><div class="cico"><i class="fa-solid fa-envelope"></i></div><div><div class="clbl">Email</div><div class="cval">cheikhbass2001@gmail.com</div></div><i class="fa-solid fa-chevron-right cchev"></i></a>
-        <a href="#" class="clink sa d3"><div class="cico"><i class="fa-brands fa-github"></i></div><div><div class="clbl">GitHub</div><div class="cval">github.com/bassirou-mbacke</div></div><i class="fa-solid fa-chevron-right cchev"></i></a>
-        <a href="#" class="clink sa d4"><div class="cico"><i class="fa-brands fa-linkedin"></i></div><div><div class="clbl">LinkedIn</div><div class="cval">Bassirou Mbacké</div></div><i class="fa-solid fa-chevron-right cchev"></i></a>
-        <a href="#" class="clink sa d5"><div class="cico" style="background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.3)"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i></div><div><div class="clbl">WhatsApp</div><div class="cval">+221 77 661 66 19</div></div><i class="fa-solid fa-chevron-right cchev"></i></a>
+        <a href="https://wa.me/221776616619" target="_blank" class="clink sa d1">
+          <div class="cico" style="background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.3)"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i></div>
+          <div><div class="clbl">WhatsApp</div><div class="cval">+221 77 661 66 19</div></div>
+          <i class="fa-solid fa-chevron-right cchev"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/bassirou-mbacke" target="_blank" class="clink sa d2">
+          <div class="cico" style="background:rgba(10,102,194,.1);border-color:rgba(10,102,194,.3)"><i class="fa-brands fa-linkedin" style="color:#0a66c2"></i></div>
+          <div><div class="clbl">LinkedIn</div><div class="cval">Bassirou Mbacké</div></div>
+          <i class="fa-solid fa-chevron-right cchev"></i>
+        </a>
       </div>
       <div class="social-row sa">
         <div class="soc-label">Retrouvez-moi sur</div>
-        <a href="#" class="slink"><i class="fa-brands fa-github"></i>GitHub</a>
-        <a href="#" class="slink"><i class="fa-brands fa-linkedin"></i>LinkedIn</a>
-        <a href="#" class="slink"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
-        <a href="#" class="slink"><i class="fa-brands fa-instagram"></i>Instagram</a>
+        <a href="https://github.com/cheikh234" target="_blank" class="slink"><i class="fa-brands fa-github"></i>GitHub</a>
+        <a href="https://www.linkedin.com/in/bassirou-mbacke" target="_blank" class="slink"><i class="fa-brands fa-linkedin"></i>LinkedIn</a>
+        <a href="https://wa.me/221776616619" target="_blank" class="slink"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
       </div>
     </div>
-    <div class="cform sa-r">
-      <div class="frow">
-        <div class="fg"><label>Prénom</label><input class="fi" type="text" placeholder="Jean"></div>
-        <div class="fg"><label>Nom</label><input class="fi" type="text" placeholder="Dupont"></div>
+
+    <div class="cright sa-r">
+      <!-- Disponibilité -->
+      <div class="cavail">
+        <div class="cavail-dot"></div>
+        <div class="cavail-txt">
+          <h4>Disponible maintenant</h4>
+          <p>Ouvert à toute opportunité — stage, alternance, freelance ou CDI</p>
+        </div>
       </div>
-      <div class="fg"><label>Email</label><input class="fi" type="email" placeholder="jean@exemple.com"></div>
-      <div class="fg"><label>Sujet</label><input class="fi" type="text" placeholder="Projet web, collaboration..."></div>
-      <div class="fg"><label>Message</label><textarea class="fta" placeholder="Décrivez votre projet..."></textarea></div>
-      <button class="fsub" id="fsub"><i class="fa-solid fa-paper-plane"></i>Envoyer le message</button>
+      <!-- Infos pratiques -->
+      <div class="cinfo-box">
+        <h4>// Informations</h4>
+        <div class="cinfo-list">
+          <div class="cinfo-item"><i class="fa-solid fa-location-dot"></i><span>Dakar, Sénégal 🇸🇳 — Mobile si besoin</span></div>
+          <div class="cinfo-item"><i class="fa-solid fa-envelope"></i><a href="mailto:cheikhbass2001@gmail.com" style="color:inherit;text-decoration:none">cheikhbass2001@gmail.com</a></div>
+          <div class="cinfo-item"><i class="fa-solid fa-code"></i><span>Disponible pour projets web, mobile, design & vidéo</span></div>
+          <div class="cinfo-item"><i class="fa-solid fa-users"></i><span>Habitué au travail en équipe, Agile, Git collaboratif</span></div>
+          <div class="cinfo-item"><i class="fa-solid fa-bolt"></i><span>Réponse rapide — généralement sous 24h</span></div>
+        </div>
+      </div>
+      <!-- Ce que je peux faire -->
+      <div class="cinfo-box">
+        <h4>// Ce que je peux livrer</h4>
+        <div class="cinfo-list">
+          <div class="cinfo-item"><i class="fa-brands fa-react"></i><span>Interface React JS / React Native complète</span></div>
+          <div class="cinfo-item"><i class="fa-solid fa-plug"></i><span>Intégration d'API REST — connexion endpoints back-end</span></div>
+          <div class="cinfo-item"><i class="fa-solid fa-pen-nib"></i><span>Design graphique & identité visuelle</span></div>
+          <div class="cinfo-item"><i class="fa-solid fa-video"></i><span>Montage vidéo CapCut</span></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -903,9 +920,9 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
   <div class="flogo">BM<em>.</em></div>
   <p>© 2025 Bassirou Mbacké — Dakar 🇸🇳</p>
   <div class="ficons">
-    <a href="#" class="ficon"><i class="fa-brands fa-github"></i></a>
-    <a href="#" class="ficon"><i class="fa-brands fa-linkedin"></i></a>
-    <a href="#" class="ficon"><i class="fa-brands fa-instagram"></i></a>
+    <a href="https://github.com/cheikh234" target="_blank" class="ficon"><i class="fa-brands fa-github"></i></a>
+    <a href="https://www.linkedin.com/in/bassirou-mbacke" target="_blank" class="ficon"><i class="fa-brands fa-linkedin"></i></a>
+    <a href="https://wa.me/221776616619" target="_blank" class="ficon"><i class="fa-brands fa-whatsapp"></i></a>
     <a href="mailto:cheikhbass2001@gmail.com" class="ficon"><i class="fa-solid fa-envelope"></i></a>
   </div>
 </footer>
@@ -924,118 +941,93 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
     <div class="lb-count" id="lb-count"></div>
   </div>
 </div>
+
+<!-- VIDEO MODAL -->
 <div id="vid-modal">
   <div class="vm-close" onclick="closeVid()"><i class="fa-solid fa-xmark"></i></div>
-  <video id="vid-modal-player" src="reactnative.mp4" controls></video>
-  <div class="vm-title">// React Native App — Volkeno</div>
+  <video id="vid-modal-player" controls></video>
+  <div class="vm-title" id="vm-title-lbl"></div>
 </div>
 
 <script>
-/* ── COMPTEUR LOADER ── */
-let pct = 0;
-const pctEl = document.getElementById('ldpct');
-const pctIv = setInterval(()=>{
-  pct = Math.min(pct + Math.random()*12, 99);
-  pctEl.textContent = Math.floor(pct) + '%';
-  if(pct >= 99) clearInterval(pctIv);
-}, 120);
-
-/* ── LOADER → INTRO ── */
-window.addEventListener('load', ()=>{
-  setTimeout(()=>{
-    pctEl.textContent = '100%';
-    clearInterval(pctIv);
-    setTimeout(()=>{
-      document.getElementById('ld').classList.add('gone');
-      // Montre l'écran intro
-      const intro = document.getElementById('intro');
-      intro.classList.add('show');
-      // Auto-exit après 3s
-      setTimeout(()=> skipIntro(), 3200);
-    }, 400);
-  }, 2000);
-});
-
+/* ── INTRO ── */
+setTimeout(()=>skipIntro(), 3000);
 function skipIntro(){
-  const intro = document.getElementById('intro');
+  const intro=document.getElementById('intro');
+  if(!intro||intro.classList.contains('exit'))return;
   intro.classList.add('exit');
-  setTimeout(()=>{ intro.style.display='none'; }, 1200);
+  setTimeout(()=>intro.style.display='none', 1200);
 }
 
-/* ── NAV scroll — FIX : démarre transparent, devient opaque dès qu'on scroll ── */
-const navEl = document.getElementById('nav');
-function updateNav(){
-  /* On active .sc dès 1px de scroll pour éviter le fond qui apparaît sans raison */
-  navEl.classList.toggle('sc', window.scrollY > 1);
-  document.getElementById('btt').classList.toggle('show', window.scrollY > 400);
-}
-window.addEventListener('scroll', updateNav, {passive:true});
-updateNav(); /* appel immédiat au chargement */
+/* ── NAV ── */
+const navEl=document.getElementById('nav');
+function updateNav(){navEl.classList.toggle('sc',window.scrollY>1);document.getElementById('btt').classList.toggle('show',window.scrollY>400);}
+window.addEventListener('scroll',updateNav,{passive:true});updateNav();
 
 /* ── HAMBURGER ── */
-function toggleMenu(){
-  const m=document.getElementById('mmenu');
-  document.getElementById('ham').classList.toggle('open');
-  m.classList.toggle('open');
-  document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
-}
-function closeMenu(){
-  document.getElementById('ham').classList.remove('open');
-  document.getElementById('mmenu').classList.remove('open');
-  document.body.style.overflow = '';
-}
+function toggleMenu(){const m=document.getElementById('mmenu');document.getElementById('ham').classList.toggle('open');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
+function closeMenu(){document.getElementById('ham').classList.remove('open');document.getElementById('mmenu').classList.remove('open');document.body.style.overflow='';}
 
 /* ── SCROLL ANIMATIONS ── */
-const obs = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){ e.target.classList.add('vis'); obs.unobserve(e.target); }
-  });
-}, {threshold: 0.07});
-document.querySelectorAll('.sa,.sa-l,.sa-r,.sa-z,.sa-flip').forEach(el => obs.observe(el));
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}});},{threshold:0.07});
+document.querySelectorAll('.sa,.sa-l,.sa-r,.sa-z,.sa-flip').forEach(el=>obs.observe(el));
 
 /* ── COUNTERS ── */
-function animN(el,t,plus){
-  let c=0;
-  const iv=setInterval(()=>{
-    c=Math.min(c+t/55,t);
-    el.textContent=Math.floor(c)+(plus?'+':'');
-    if(c>=t)clearInterval(iv);
-  },16);
-}
-new IntersectionObserver(es=>es.forEach(e=>{
-  if(e.isIntersecting) document.querySelectorAll('.hs-n').forEach(el=>{
-    if(!el.dataset.done){el.dataset.done='1';animN(el,+el.dataset.t,el.dataset.plus);}
-  });
-}),{threshold:.5}).observe(document.querySelector('#hero'));
+function animN(el,t,plus){let c=0;const iv=setInterval(()=>{c=Math.min(c+t/55,t);el.textContent=Math.floor(c)+(plus?'+':'');if(c>=t)clearInterval(iv);},16);}
+new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)document.querySelectorAll('.hs-n').forEach(el=>{if(!el.dataset.done){el.dataset.done='1';animN(el,+el.dataset.t,el.dataset.plus);}});}),{threshold:.5}).observe(document.querySelector('#hero'));
 
-/* ── PROJECT FILTER ── */
+/* ── PROJECT FILTER — no scroll reset ── */
 function pf(cat,btn){
   document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
+  const scrollY=window.scrollY; /* save position */
   let d=0;
   document.querySelectorAll('.pcard').forEach(c=>{
     if(cat==='all'||c.dataset.cat===cat){
       c.style.display='flex';c.style.opacity='0';c.style.transform='scale(.94) translateY(12px)';
-      setTimeout(()=>{
-        c.style.transition='all .5s cubic-bezier(.16,1,.3,1)';
-        c.style.opacity='1';c.style.transform='none';
-      },d);d+=60;
-    } else { c.style.display='none'; }
+      setTimeout(()=>{c.style.transition='all .5s cubic-bezier(.16,1,.3,1)';c.style.opacity='1';c.style.transform='none';},d);d+=60;
+    } else {c.style.display='none';}
   });
+  /* restore scroll position */
+  requestAnimationFrame(()=>window.scrollTo(0,scrollY));
 }
 
-/* ── VIDEO ── */
-const vr=document.getElementById('vid-rn');
-if(vr){
-  vr.addEventListener('loadeddata',()=>vr.style.opacity='1');
-  const wp=vr.closest('.pthumb');
-  if(wp){
-    wp.addEventListener('mouseenter',()=>{try{vr.play();}catch(e){}});
-    wp.addEventListener('mouseleave',()=>{vr.pause();vr.currentTime=0;});
-  }
+/* ── HISTORY STATE — prevent scroll reset on nav ── */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const id=a.getAttribute('href');
+    const el=document.querySelector(id);
+    if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth'});}
+  });
+});
+
+/* ── VIDEO hover previews ── */
+function setupVidHover(id){
+  const v=document.getElementById(id);
+  if(!v)return;
+  v.addEventListener('loadeddata',()=>v.style.opacity='1');
+  const wp=v.closest('.pthumb');
+  if(wp){wp.addEventListener('mouseenter',()=>{try{v.play();}catch(e){}});wp.addEventListener('mouseleave',()=>{v.pause();v.currentTime=0;});}
 }
-function openVid(){document.getElementById('vid-modal').classList.add('open');document.body.style.overflow='hidden';try{document.getElementById('vid-modal-player').play();}catch(e){}}
-function closeVid(){document.getElementById('vid-modal').classList.remove('open');document.body.style.overflow='';const p=document.getElementById('vid-modal-player');p.pause();p.currentTime=0;}
+setupVidHover('vid-rn');setupVidHover('vid-rp');setupVidHover('vid-brtt');
+
+/* ── VIDEO MODAL ── */
+function openVid(src,title){
+  const modal=document.getElementById('vid-modal');
+  const player=document.getElementById('vid-modal-player');
+  const lbl=document.getElementById('vm-title-lbl');
+  player.src=src;
+  lbl.textContent=title||'';
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+  try{player.play();}catch(e){}
+}
+function closeVid(){
+  document.getElementById('vid-modal').classList.remove('open');
+  document.body.style.overflow='';
+  const p=document.getElementById('vid-modal-player');
+  p.pause();p.currentTime=0;p.src='';
+}
 document.getElementById('vid-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeVid();});
 
 /* ── LIGHTBOX ── */
@@ -1060,13 +1052,6 @@ document.addEventListener('keydown',e=>{
 let tx=0;
 document.getElementById('lightbox').addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
 document.getElementById('lightbox').addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)lbNav(d<0?1:-1);});
-
-/* ── FORM ── */
-document.getElementById('fsub').addEventListener('click',function(){
-  this.innerHTML='<i class="fa-solid fa-check"></i>Message envoyé !';
-  this.style.background='#22c55e';
-  setTimeout(()=>{this.innerHTML='<i class="fa-solid fa-paper-plane"></i>Envoyer le message';this.style.background='';},3500);
-});
 </script>
 </body>
 </html>
