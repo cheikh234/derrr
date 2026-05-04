@@ -1009,7 +1009,10 @@ function setupVidHover(id){
   if(!v)return;
   v.addEventListener('loadeddata',()=>v.style.opacity='1');
   const wp=v.closest('.pthumb');
-  if(wp){wp.addEventListener('mouseenter',()=>{try{v.play();}catch(e){}});wp.addEventListener('mouseleave',()=>{v.pause();v.currentTime=0;});}
+  if(wp){
+    wp.addEventListener('mouseenter',()=>{try{v.play();}catch(e){}});
+    wp.addEventListener('mouseleave',()=>{v.pause();v.currentTime=0;v.style.opacity='0';});
+  }
 }
 setupVidHover('vid-rn');setupVidHover('vid-rp');setupVidHover('vid-brtt');
 
