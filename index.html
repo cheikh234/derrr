@@ -159,7 +159,31 @@ h1.htitle .nl{display:block;color:var(--neon);text-shadow:0 0 60px rgba(57,255,2
 .hdesc{font-size:.9rem;color:var(--grey2);line-height:1.85;max-width:520px;animation:fsu .9s .65s both}
 .hdesc strong{color:var(--silver);font-weight:600}
 .hbtns{display:flex;gap:.9rem;flex-wrap:wrap;margin-top:2.5rem;animation:fsu .9s .75s both}
-.btn-n{display:inline-flex;align-items:center;gap:.55rem;background:var(--neon);color:var(--bg);padding:.85rem 2.2rem;font-family:var(--mono);font-size:.72rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:all .3s;box-shadow:0 0 30px rgba(57,255,20,.2)}
+.btn-n{display:inline-flex;align-items:center;gap:.55rem;background:var(--neon);color:var(--bg);padding:.85rem 2.2rem;font-family:var(--mono);font-size:.72rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:all .3s;box-shadow:0 0 30px rgba(57,255,20,.2);cursor:pointer;border:none}
+#proj-popup{
+  display:none;position:fixed;inset:0;z-index:9000;
+  background:rgba(0,0,0,.85);backdrop-filter:blur(16px);
+  align-items:center;justify-content:center;
+}
+#proj-popup.open{display:flex}
+.pp-box{
+  background:#0d0d10;border:1px solid var(--border2);
+  border-radius:16px;padding:2.5rem 2rem;
+  display:flex;flex-direction:column;align-items:center;gap:1.2rem;
+  width:min(90vw,360px);position:relative;
+}
+.pp-title{font-family:var(--mono);font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;color:var(--neon);margin-bottom:.5rem;}
+.pp-btn{
+  width:100%;padding:1rem 1.5rem;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:10px;color:var(--white);font-family:var(--disp);
+  font-size:1.4rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:1rem;
+}
+.pp-btn:hover{background:var(--neonA);border-color:var(--border2);color:var(--neon);transform:translateX(6px)}
+.pp-btn i{color:var(--neon);font-size:1rem;width:18px}
+.pp-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--grey);font-size:1rem;cursor:pointer;transition:color .3s;}
+.pp-close:hover{color:var(--neon)}
 .btn-n:hover{background:var(--white);transform:translateY(-3px);box-shadow:0 0 40px rgba(57,255,20,.35)}
 .btn-o{display:inline-flex;align-items:center;gap:.55rem;background:transparent;color:var(--silver);border:1px solid rgba(255,255,255,.14);padding:.85rem 2rem;font-family:var(--mono);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:all .3s}
 .btn-o:hover{border-color:var(--neon);color:var(--neon);transform:translateY(-2px)}
@@ -451,7 +475,7 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
     <p class="hrole">Dev Web &amp; Mobile <em>//</em> Front-End · Graphiste</p>
     <p class="hdesc">Développeur <strong>front-end passionné</strong>, formé à Bakeli School of Technology. Je construis des interfaces modernes, rapides et inoubliables — et je me débrouille seul pour trouver des solutions.</p>
     <div class="hbtns">
-      <a href="#projets" class="btn-n"><i class="fa-solid fa-terminal"></i>Voir mes projets</a>
+      <button onclick="openProjPopup()" class="btn-n"><i class="fa-solid fa-terminal"></i>Voir mes projets</button>
       <a href="#contact" class="btn-o"><i class="fa-brands fa-whatsapp"></i>Me contacter</a>
     </div>
     <div class="hstats">
@@ -783,10 +807,10 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
   <h2 class="stitle sa">Mes <em>Projets</em></h2>
   <p class="ssub sa">Web, infographie et vidéo — mes meilleures réalisations.</p>
   <div class="fbar">
-    <button class="fbtn on" onclick="pf('all',this)">Tout voir</button>
-    <button class="fbtn" onclick="pf('web',this)"><i class="fa-solid fa-code"></i> Web</button>
-    <button class="fbtn" onclick="pf('design',this)"><i class="fa-solid fa-pen-nib"></i> Infographie</button>
-    <button class="fbtn" onclick="pf('video',this)"><i class="fa-solid fa-video"></i> Vidéo</button>
+    <button class="fbtn on" data-cat="all" onclick="pf('all',this)">Tout voir</button>
+    <button class="fbtn" data-cat="web" onclick="pf('web',this)"><i class="fa-solid fa-code"></i> Web</button>
+    <button class="fbtn" data-cat="design" onclick="pf('design',this)"><i class="fa-solid fa-pen-nib"></i> Infographie</button>
+    <button class="fbtn" data-cat="video" onclick="pf('video',this)"><i class="fa-solid fa-video"></i> Vidéo</button>
   </div>
   <div class="pgrid">
 
@@ -934,6 +958,18 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
   </div>
 </section>
 
+<!-- ════ POPUP CHOIX PROJETS ════ -->
+<div id="proj-popup">
+  <div class="pp-box">
+    <button class="pp-close" onclick="closeProjPopup()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="pp-title">// Que veux-tu voir ?</div>
+    <button class="pp-btn" onclick="goProj('web')"><i class="fa-solid fa-code"></i>Web</button>
+    <button class="pp-btn" onclick="goProj('video')"><i class="fa-solid fa-mobile-screen"></i>Mobile</button>
+    <button class="pp-btn" onclick="goProj('design')"><i class="fa-solid fa-pen-nib"></i>Infographie</button>
+    <button class="pp-btn" onclick="goProj('all')"><i class="fa-solid fa-layer-group"></i>Tout voir</button>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="flogo">BM<em>.</em></div>
@@ -969,7 +1005,18 @@ footer p{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(
 </div>
 
 <script>
-/* ── INTRO ── */
+/* ── POPUP PROJETS ── */
+function openProjPopup(){document.getElementById('proj-popup').classList.add('open');document.body.style.overflow='hidden';}
+function closeProjPopup(){document.getElementById('proj-popup').classList.remove('open');document.body.style.overflow='';}
+function goProj(cat){
+  closeProjPopup();
+  document.querySelector('#projets').scrollIntoView({behavior:'smooth'});
+  setTimeout(()=>{
+    const btn=document.querySelector(`.fbtn[data-cat="${cat}"]`)||document.querySelectorAll('.fbtn')[cat==='all'?0:cat==='web'?1:cat==='video'?3:2];
+    if(btn)pf(cat,btn);
+  },600);
+}
+document.getElementById('proj-popup').addEventListener('click',e=>{if(e.target===e.currentTarget)closeProjPopup();});
 setTimeout(()=>skipIntro(), 3000);
 function skipIntro(){
   const intro=document.getElementById('intro');
