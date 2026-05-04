@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Bassirou Mbacké — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;0,900;1,700&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -29,8 +29,8 @@
   --ghero: linear-gradient(135deg,#080808 0%,#0c1106 35%,#091a03 65%,#060d04 100%);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:16px}
-body{font-family:var(--body);background:var(--bg);color:var(--text);overflow-x:hidden}
+html{scroll-behavior:smooth;font-size:16px;margin:0;padding:0}
+body{font-family:var(--body);background:var(--bg);color:var(--text);overflow-x:hidden;margin:0;padding:0}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--neon);border-radius:2px}
@@ -75,8 +75,6 @@ nav{
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border-bottom:1px solid var(--border);
   box-shadow:0 1px 20px rgba(0,0,0,.5);
-  /* iPhone safe area */
-  padding-top:env(safe-area-inset-top);
 }
 nav.sc{box-shadow:0 2px 30px rgba(0,0,0,.6);}
 .logo{font-family:var(--disp);font-size:1.9rem;font-weight:900;letter-spacing:.12em;color:var(--white);text-decoration:none;line-height:1}
